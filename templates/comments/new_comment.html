@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form method="POST">
+        {{ form.csrf_token }}
+        <div>
+          {% if form.text.errors %}
+            {% for error in form.text.errors %}
+              <span class="text-danger">
+            {{ error }}
+          </span>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div>
+            <p> Let everyone about your feedback! </p>
+        </div>
+      
+
+        <div>
+            <p> Event Name : {{ form.eventname }} </p>
+        </div>
+        <div>
+            <p> City : {{ form.city }} </p>
+        </div>
+        
+        <div>
+            <p> {{ form.text(placeholder="How was your experience?", class="form-control", rows="3") }}  </p>
+        </div>
+        
+
+        <button class="btn btn-outline-success btn-block">Add Comment!</button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

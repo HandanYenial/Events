@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="header">
+    <h3 class="text-muted"> Comments Page </h3>
+  </div>
+  <hr/>
+<div>
+  <p> Let everyone know how your experience was <a href="/comment/add"> </a></p>
+</div>
+
+  {%- for category, message in get_flashed_messages(with_categories=true) %}
+  <div class="alert alert-success">
+    {{ message }}
+  </div>
+  {%- endfor %}
+
+ <a href="/comments/new">Add comment</a></h3>
+ 
+  <table class="table">
+<thead>
+      <tr>
+        <th>Event Name</th>
+        <th>City</th>
+        <th>Username</th>
+        <th>Comment</th>
+        <th>When</th>
+      </tr>
+</thead>
+<tbody>
+      {% for comment in comments %}
+      <tr>
+        <td>{{ comment.eventname }}</td> 
+        <td>{{ comment.city}}</td>
+        <td>{{ comment.username }}</td>
+        <td>{{ comment.text }}</td>
+        <td>{{ comment.timestamp.strftime("%H:%M:%S %d/%m/%Y") }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+</div>
+
+
+{% endblock %}
+
