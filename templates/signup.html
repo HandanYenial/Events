@@ -1,26 +1,53 @@
-{% extends 'base.html'  %}
+{% extends 'homepage.html'  %}
 
 {% block content %}
+<!-- Header-->
+  <header>
+  <!-- Background image -->
+    <div class="p-5 text-center bg-image"
+        style="
+        background-image: url('https://images.unsplash.com/photo-1544924751-8acb02fb5331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80');
+        background-size: cover;
+        height:400px;
+        background-repeat: no-repeat;">
+              
+      <div class="mask" style="background-color:rgba(247, 156, 156, 0.507);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+          <div class="text-dark">
+            <h1 class="mb-3" > Events</h1>
+            <h4 class="mb-3">Search for events in your area, share your thoughts and more...</h4>
+            <div> <a class="btn btn-outline-dark btn-lg" href="/events" role="button">Start</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<h1 class="display-1">Sign Up</h1>
-<p class="lead"> Register below to add your favorite events to your wishlist and leave comments about them.</p>
+  <section class="py-5" style="background-color:black">
+    <div class="container-sm"> 
+      <h1 class="display-1" style="color:white; text-align: center;" >Sign Up</h1>
+      <p class="lead" style="color:white; text-align: center; font-size: x-large;"> Register below to leave feedbacks about your experience and see others' comments.</p>
 
-<form method="POST">
+      <form method="POST" style="color:white; text-align: center; font-size: x-large;">
+          {{ form.hidden_tag() }}
 
-  {{ form.hidden_tag() }}
+          {% for field in form
+             if field.widget.input_type != 'hidden' %}
+      <p>
+          {{ field.label }}
+          {{ field(class_="form-control") }}
 
-  {% for field in form
-    if field.widget.input_type != 'hidden' %}
-  <p>
-    {{ field.label }}
-    {{ field(class_="form-control") }}
+       {% for error in field.errors %}
+          <span class="form-text text-danger">{{ error }}</span>
+       {% endfor %}
+      </p>
+          {% endfor %}
 
-    {% for error in field.errors %}
-    <span class="form-text text-danger">{{ error }}</span>
-    {% endfor %}
-  </p>
-  {% endfor %}
+      <button class="btn btn-warning btn-outline-dark" type="submit">Signup</button> 
+    </form>
+    </div>
+  </section>
 
-  <button class="btn btn-primary" type="submit">Register</button>
+
 
   {%endblock%}
