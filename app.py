@@ -29,14 +29,15 @@ connect_db(app)
 
 #######################################################################
 
-@app.route("/" , methods = ["GET"])
+@app.route("/" , methods = ["GET"]) 
 def show_homepage():
-    """Show homepage"""
+    """Show homepage with events limit is 20"""
     events=[]
     #item = {"keyword":"rock"}
     event_list = requests.get(API_BASE_URL)
     my_list = event_list.json() #this is a dictionary
     #print(my_list['page']['totalElements'])
+
     if my_list['page']['totalElements'] != 0:
         for event in my_list['_embedded']['events']:
             event_dic = {}
@@ -54,7 +55,8 @@ def show_homepage():
 ####################   API    ##############
 @app.route('/events', methods=['GET','POST'])
 def search():
-   
+    """Search for events by using a keyword and a city name"""
+
     form = SearchForm()
     events = []
     
@@ -62,35 +64,33 @@ def search():
         text = form.text.data
         e_city = form.e_city.data 
         search_items = {'keyword' : text , 'city':e_city} 
-
         result = requests.get(API_BASE_URL, params=search_items)
         
 
         my_list = result.json() #this is a dictionary
         #print(my_list['page']['totalElements'])
 
-        
+       
         if my_list['page']['totalElements'] != 0:
             
             for event in my_list['_embedded']['events']:
                 event_dic = {}
-                
-
                 event_dic['name'] = event['name']
                 event_dic['url'] = event['url']
                 event_dic['dates'] = event['dates']
-                event_dic['images'] = event['images'][2]['url']
-
+                event_dic['images'] = event['images'][2]['url']   
                 #print(event_dic['images'])
-          
                 events.append(event_dic)
     
 
     return render_template("index.html" , form=form, events=events)
   
 ##############################################################################
-
-
+#The before_request decorator allows us to create a function that will run before each request.
+#before_request functions are ideal for tasks such as:
+#1.openning database connections
+#2.Loading user from the session 
+#3.Working with the flask g object
 
 @app.before_request
 def add_user_to_g():

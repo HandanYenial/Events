@@ -2,62 +2,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <div class="container px-4 px-lg-5 mt-5">
-          <div >
-            <div>
-        <form action="/" method="POST">
+  <!-- Header-->
+  <header>
+     <!-- Background image -->
+    <div
+      class="p-5 text-center bg-image"
+        style="
+          background-image: url('https://images.unsplash.com/photo-1544924751-8acb02fb5331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80');
+          background-size: cover;
+          height:500px;
+          background-repeat: no-repeat;">
+           
+          <div class="mask" style="background-color:rgba(247, 156, 156, 0.507);">
+            <div class="d-flex justify-content-center align-items-center h-100">
+              <div class="text-black">
 
-          {{ form.hidden_tag() }}
-        
-          {% for field in form
-            if field.widget.input_type != 'hidden' %}
-          <p>
-            {{ field.label }}
-            {{ field(class_="form-control") }}
-        
-            {% for error in field.errors %}
-      
-            <span class="form-text text-danger">{{ error }}</span>
-            {% endfor %}
-          </p>
-          {% endfor %}
-        
-          <button id="sub-button" class="btn btn-primary btn-outline-dark mt-auto"  type="submit"> Search </button> 
-        </form>
-        </div>
-        </div>
-        </div>
-        <!-- Section-->
-        <section class="py-5">
-          {% for event in events %} 
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <h1 class="mb-3" > Events </h1>
+                <h4 class="mb-3"> Enter a keyword and a city name to start new experiences!</h4>
+                <form action="/events" method="POST">
 
-                  <div class="col mb-5">
-                    <div class="card h-100">
-                          <!-- Product image-->
-                          <img class="card-img-top" src={{event.images}} alt="..." />
-                          <!-- Product details-->
-                          <div class="card-body p-4">
-                              <div class="text-center">
-                                  <!-- Product name-->
-                                  <h5 class="fw-bolder">{{event.name }}</h5>
-                                  <!-- Product price-->
-                                  {{ event.dates.start.localDate }}
-                              </div>
-                          </div>
-                          <!-- Product actions-->
-                          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-warning btn-outline-dark mt-auto" href="{{event.url}}">Details and Tickets</a></div>
-                          </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                           <div class="text-center"><a class="btn btn-info btn-outline-dark mt-auto" href="/events/{event.id}">Event Details</a></div>
-                        </div>
-                      </div>
-                  </div>
+                {{ form.hidden_tag() }}
+                
+                {% for field in form
+                    if field.widget.input_type != 'hidden' %}
+                  <p>
+                    {{ field.label }}
+                    {{ field(class_="form-control") }}
+                
+                    {% for error in field.errors %}
+              
+                    <span class="form-text text-danger">{{ error }}</span>
+                    {% endfor %}
+                  </p>
+                {% endfor %}
+
+                <button id="sub-button" class="btn btn-dark btn-outline-dark mt-auto"  type="submit"> Search </button> 
+                </form>
+              </div>
             </div>
-            {%endfor%}
-        </section>
+          </div>
+    </div>
+  </header>
+
+          <!-- Section--> 
+          <section class="py-5" style="background-color:black">
+         
+            <div class="container"> 
+             
+            <div class="row">
+              {% for event in events %}    
+            <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
+            <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));">
+              <img class="card-img-top" src={{event.images}} alt="Card image cap">
+              <div class="card-body" style="flex:auto; padding:10px;">
+                <h5 class="card-title">{{event.name }}</h5>
+                <p class="card-text">{{ event.dates.start.localDate }}</p>
+                <a href="{{event.url}}" class="btn btn-warning">Details</a>
+              </div>
+            </div>
+            </div>
+            {%endfor%} 
+            </div>
+            
+          </div>
+          
+          </section>
 {%endblock%}
 
