@@ -1,47 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-  <div class="header">
-    <h3 class="text-muted"> Comments Page </h3>
-  </div>
-  <hr/>
+
+<section style="background-color:black; color:white; margin:auto;">
+<container style="max-width:720px; text-align:center;">
+  <br>
+  <h1 style="margin:auto; text-align:center;"> Feedback </h1>
+<br>
 <div>
   <p> Let everyone know how your experience was <a href="/comment/add"> </a></p>
 </div>
+ <a href="/comments/new" style="color:rgb(250, 186, 126); margin:auto; ">Add comment</a></h3>
 
-  {%- for category, message in get_flashed_messages(with_categories=true) %}
-  <div class="alert alert-success">
-    {{ message }}
-  </div>
-  {%- endfor %}
-
- <a href="/comments/new">Add comment</a></h3>
- 
-  <table class="table">
-<thead>
-      <tr>
-        <th>Event Name</th>
-        <th>City</th>
-        <th>Username</th>
-        <th>Comment</th>
-        <th>When</th>
+  <table class="table" style="color:aliceblue; border:solid rgb(250, 186, 126); margin:auto; max-width:1140px;">
+<thead style="color:aliceblue; border:solid rgb(250, 186, 126) ">
+      <tr style="color:aliceblue; border:solid rgb(250, 186, 126)">
+        <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">Event Name</th>
+        <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">City</th>
+        <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">Username</th>
+        <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">Comment</th>
+        <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">When</th>
       </tr>
 </thead>
 <tbody>
       {% for comment in comments %}
       <tr>
-        <td>{{ comment.eventname }}</td> 
-        <td>{{ comment.city}}</td>
-        <td>{{ comment.username }}</td>
-        <td>{{ comment.text }}</td>
-        <td>{{ comment.timestamp.strftime("%H:%M:%S %d/%m/%Y") }}</td>
+        <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.eventname }}</td> 
+        <td style="color:aliceblue; border:solid rgb(250, 186, 126)" >{{ comment.city}}</td>
+        <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.username }}</td>
+        <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.text }}</td>
+        <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.timestamp.strftime("%H:%M:%S %d/%m/%Y") }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
+</container>
+</section>
 
-</div>
 
 
 {% endblock %}

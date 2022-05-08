@@ -159,7 +159,7 @@ def login():
         if user:
             do_login(user)
             flash(f"Hello, {user.username}!", "success")
-            return redirect("/")
+            return redirect(f"/users/{user.id}")
 
         flash("Invalid credentials.", 'danger')
 
@@ -169,6 +169,9 @@ def login():
 @app.route('/users/<int:user_id>')
 def show_user(user_id):
     """Show user profile."""
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
     user = User.query.get_or_404(user_id)
    

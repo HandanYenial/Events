@@ -1,21 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-  <div class="row justify-content-md-center">
+<section style="background-color:black; color:white;">
+  <container style="max-width:720px; text-align:center;">
+  <div class="row justify-content-md-center" >
     <div class="col-md-4">
-      <h2 class="join-message">Edit Your Profile.</h2>
-      <form method="POST" id="user_form">
+      <h1 class="join-message" style="margin:40px;">Edit Your Profile</h1>
+      <form method="POST" id="user_form" style="margin:20px;">
+
         {{ form.hidden_tag() }}
 
         {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
-          {% for error in field.errors %}
+
+        {% for error in field.errors %}
+
+          <div style="margin:20px;">
             <span class="text-danger">{{ error }}</span>
-          {% endfor %}
-          {{ field(placeholder=field.label.text, class="form-control") }}
+          </div>
+
+        {% endfor %}
+        <p style="margin:20px;">   {{ field(placeholder=field.label.text, class="form-control") }} </p>
+       
         {% endfor %}
 
-        <p>To confirm changes, enter your password:</p>
+        <p style="margin:20px;">To confirm changes, enter your password:</p>
         {% if form.password.errors %}
           {% for error in form.password.errors %}
             <span class="text-danger">
@@ -23,14 +31,16 @@
           </span>
           {% endfor %}
         {% endif %}
-        {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
+        <p style="margin:20px;"> {{ form.password(placeholder="Enter your password to confirm", class="form-control") }} </p>
+        
 
-        <div class="edit-btn-area">
+        <div class="edit-btn-area" style="margin:20px;">
           <button class="btn btn-success">Edit this user!</button>
           <a href="/users/{{ user_id }}" class="btn btn-outline-secondary">Cancel</a>
         </div>
       </form>
     </div>
   </div>
-
+</container>
+</section>
 {% endblock %}
