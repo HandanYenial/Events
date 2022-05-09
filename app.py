@@ -45,6 +45,9 @@ def show_homepage():
             event_dic['url'] = event['url']
             event_dic['dates'] = event['dates']
             event_dic['images'] = event['images'][2]['url']
+            event_dic['images'] = event['images'][2]['url'] 
+            event_dic['classifications']  = event['classifications'][0]
+            event_dic['sales'] = event['sales']
 
             #print(event_dic['images'])
           
@@ -78,12 +81,46 @@ def search():
                 event_dic['name'] = event['name']
                 event_dic['url'] = event['url']
                 event_dic['dates'] = event['dates']
-                event_dic['images'] = event['images'][2]['url']   
+                event_dic['images'] = event['images'][2]['url'] 
+                event_dic['classifications']  = event['classifications'][0]
+                event_dic['sales'] = event['sales']
                 #print(event_dic['images'])
                 events.append(event_dic)
     
 
     return render_template("index.html" , form=form, events=events)
+
+##########can't do this!!
+
+@app.route("/events/<int:event_id>" , methods=["GET"])
+def show_event_details(event_id):
+    """Show details of an event"""
+    events=[]
+   
+    event_list = requests.get(API_BASE_URL, params={'id': 'event.id'})
+    my_list = event_list.json() #this is a dictionary
+    #print(my_list['page']['totalElements'])
+
+    if my_list['page']['totalElements'] != 0:
+        for event in my_list['_embedded']['events']:
+            event_dic = {}
+            event_dic['name'] = event['name']
+            event_dic['url'] = event['url']
+            event_dic['dates'] = event['dates']
+            event_dic['images'] = event['images'][2]['url']
+            event_dic['seatmap'] = event['seatmap']['staticUrl']
+            event_dic['sales'] = event['sales']
+           
+            
+
+
+            #print(event_dic['images'])
+          
+            events.append(event_dic)
+
+    return render_template("event_info.html" ,events=events, event_list=event_list,my_list=my_list )
+
+
   
 ##############################################################################
 #The before_request decorator allows us to create a function that will run before each request.
@@ -230,6 +267,13 @@ def show_all_comments():
     return render_template('comments/show_comments.html' , comments=comments)
 
 
+@app.route('/comments/<int:comment_id>' , methods=["GET"])
+def show_comment(comment_id):
+    """Show a comment with the given comment id"""
+    comment = Comment.query.get_or_404(comment_id)
+    return render_template('comments/show_a_comment.html' ,comment=comment)
+
+
 
 @app.route('/comments/<int:comment_id>/delete', methods=["POST"])
 def delete_comment(comment_id):
@@ -252,7 +296,7 @@ def delete_comment(comment_id):
 
 
 
-@app.route('/comments/<int:comment_id>/favorites', methods=['POST'])
+@app.route('/comments/<int:comment_id>/favorite', methods=['POST'])
 def add_favorite(comment_id):
     """Toggle a favorited comment for the currently-logged-in user."""
 
@@ -274,6 +318,8 @@ def add_favorite(comment_id):
     db.session.commit()
 
     return redirect("/")
+
+
 
 
 @app.route('/users/<int:user_id>/favorites', methods=["GET"])

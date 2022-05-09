@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
+
 <section style="background-color:black; color:white; margin:auto;">
 <container style="max-width:720px; text-align:center;">
   <br>
@@ -26,16 +28,16 @@
       <tr>
         <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.eventname }}</td> 
         <td style="color:aliceblue; border:solid rgb(250, 186, 126)" >{{ comment.city}}</td>
-        <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.username }}</td>
+        <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.user.username }}</td>
         <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.text }}</td>
         <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.timestamp.strftime("%H:%M:%S %d/%m/%Y") }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-
 </container>
 </section>
+
 
 
 

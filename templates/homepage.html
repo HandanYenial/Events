@@ -14,9 +14,13 @@
           <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));">
             <img class="card-img-top" src={{event.images}} alt="Card image cap">
             <div class="card-body" style="flex:auto; padding:10px;">
-              <h5 class="card-title">{{event.name }}</h5>
-              <p class="card-text">{{ event.dates.start.localDate }}</p>
-              <a href="{{event.url}}" class="btn btn-warning">Details</a>
+              <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
+              <p class="card-text" style="text-align: center;">{{ event.dates.start.localDate }}</p>
+              <p class="card-text"> <b> Ticket Sales End Date&Time:  </b>{{ event.sales.public.endDateTime}}</p>
+              <p class="card-text"> <b>Family Friendly : </b>{{ event.classifications.primary}}</p>
+              <p class="card-text"> <b>Genre : </b>{{ event.classifications.genre.name }}</p>
+              
+              <a href="{{event.url}}" class="btn btn-warning" > Tickets </a>
             </div>
           </div>
           </div>
