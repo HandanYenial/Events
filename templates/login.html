@@ -2,27 +2,30 @@
 
 {% block content %}
 
-<h1 class="display-1">Login </h1>
-<p class="lead"> Welcome Back </p>
 
-<form action="/login" method="POST">
+  <section class="py-5" style="background-color:black">
+    <div class="container-sm"> 
+      <h1 class="display-1" style="color:white; text-align: center;" >Login</h1>
+      <p class="lead" style="color:white; text-align: center; font-size: x-large;"> Welcome Back!</p>
 
-  {{ form.hidden_tag() }}
+      <form action="/login" method="POST" style="color:white; text-align: center; font-size: x-large;">
+          {{ form.hidden_tag() }}
 
-  {% for field in form
-    if field.widget.input_type != 'hidden' %}
-  <p>
-    {{ field.label }}
-    {{ field(class_="form-control") }}
+          {% for field in form
+             if field.widget.input_type != 'hidden' %}
+      <p>
+          {{ field.label }}
+          {{ field(class_="form-control") }}
 
-    {% for error in field.errors %}
-    <span class="form-text text-danger">{{ error }}</span>
-    {% endfor %}
-  </p>
-  {% endfor %}
+       {% for error in field.errors %}
+          <span class="form-text text-danger">{{ error }}</span>
+       {% endfor %}
+      </p>
+          {% endfor %}
 
-
-
-  <button class="btn btn-primary" type="submit">Login</button>
+    <button class="btn btn-warning btn-outline-dark" type="submit">Login</button> 
+    </form>
+    </div>
+  </section>
 
   {%endblock%}

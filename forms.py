@@ -5,7 +5,7 @@ import email_validator
 
 class SearchForm(FlaskForm):
     """Form for searching by area"""
-    text = StringField('Write a keyword to find the event' , validators = [DataRequired()])
+    text = StringField('Keyword' , validators = [DataRequired()])
     e_city = StringField('City name' , validators = [DataRequired()])
    
 class CommentForm(FlaskForm):

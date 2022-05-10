@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, flash, session, jsonify,requ
 #from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
+from dateutil import parser
 
 from models import db, connect_db, User, Comment, Event, Favorite, Venue, bcrypt
 from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm
@@ -29,14 +30,15 @@ connect_db(app)
 
 #######################################################################
 
-@app.route("/" , methods = ["GET"])
+@app.route("/" , methods = ["GET"]) 
 def show_homepage():
-    """Show homepage"""
+    """Show homepage with events limit is 20"""
     events=[]
     #item = {"keyword":"rock"}
     event_list = requests.get(API_BASE_URL)
     my_list = event_list.json() #this is a dictionary
     #print(my_list['page']['totalElements'])
+
     if my_list['page']['totalElements'] != 0:
         for event in my_list['_embedded']['events']:
             event_dic = {}
@@ -44,6 +46,9 @@ def show_homepage():
             event_dic['url'] = event['url']
             event_dic['dates'] = event['dates']
             event_dic['images'] = event['images'][2]['url']
+            event_dic['images'] = event['images'][2]['url'] 
+            event_dic['classifications']  = event['classifications'][0]
+            event_dic['sales'] = event['sales']
 
             #print(event_dic['images'])
           
@@ -54,7 +59,8 @@ def show_homepage():
 ####################   API    ##############
 @app.route('/events', methods=['GET','POST'])
 def search():
-   
+    """Search for events by using a keyword and a city name"""
+
     form = SearchForm()
     events = []
     
@@ -62,35 +68,37 @@ def search():
         text = form.text.data
         e_city = form.e_city.data 
         search_items = {'keyword' : text , 'city':e_city} 
-
         result = requests.get(API_BASE_URL, params=search_items)
         
 
         my_list = result.json() #this is a dictionary
         #print(my_list['page']['totalElements'])
 
-        
+       
         if my_list['page']['totalElements'] != 0:
             
             for event in my_list['_embedded']['events']:
                 event_dic = {}
-                
-
                 event_dic['name'] = event['name']
                 event_dic['url'] = event['url']
                 event_dic['dates'] = event['dates']
-                event_dic['images'] = event['images'][2]['url']
-
+                event_dic['images'] = event['images'][2]['url'] 
+                event_dic['classifications']  = event['classifications'][0]
                 #print(event_dic['images'])
-          
+                py_date = parser.parse(event['sales']['public']['endDateTime'])
+                event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
                 events.append(event_dic)
     
 
     return render_template("index.html" , form=form, events=events)
+
   
 ##############################################################################
-
-
+#The before_request decorator allows us to create a function that will run before each request.
+#before_request functions are ideal for tasks such as:
+#1.openning database connections
+#2.Loading user from the session 
+#3.Working with the flask g object
 
 @app.before_request
 def add_user_to_g():
@@ -159,7 +167,7 @@ def login():
         if user:
             do_login(user)
             flash(f"Hello, {user.username}!", "success")
-            return redirect("/")
+            return redirect(f"/users/{user.id}")
 
         flash("Invalid credentials.", 'danger')
 
@@ -169,6 +177,9 @@ def login():
 @app.route('/users/<int:user_id>')
 def show_user(user_id):
     """Show user profile."""
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
     user = User.query.get_or_404(user_id)
    
@@ -227,6 +238,13 @@ def show_all_comments():
     return render_template('comments/show_comments.html' , comments=comments)
 
 
+@app.route('/comments/<int:comment_id>' , methods=["GET"])
+def show_comment(comment_id):
+    """Show a comment with the given comment id"""
+    comment = Comment.query.get_or_404(comment_id)
+    return render_template('comments/show_a_comment.html' ,comment=comment)
+
+
 
 @app.route('/comments/<int:comment_id>/delete', methods=["POST"])
 def delete_comment(comment_id):
@@ -249,7 +267,7 @@ def delete_comment(comment_id):
 
 
 
-@app.route('/comments/<int:comment_id>/favorites', methods=['POST'])
+@app.route('/comments/<int:comment_id>/favorite', methods=['POST'])
 def add_favorite(comment_id):
     """Toggle a favorited comment for the currently-logged-in user."""
 
@@ -271,6 +289,8 @@ def add_favorite(comment_id):
     db.session.commit()
 
     return redirect("/")
+
+
 
 
 @app.route('/users/<int:user_id>/favorites', methods=["GET"])

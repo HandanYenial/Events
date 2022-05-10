@@ -1,26 +1,32 @@
-{% extends 'base.html'  %}
+{% extends 'homepage.html'  %}
 
 {% block content %}
 
-<h1 class="display-1">Sign Up</h1>
-<p class="lead"> Register below to add your favorite events to your wishlist and leave comments about them.</p>
+  <section class="py-5" style="background-color:black">
+    <div class="container-sm"> 
+      <h1 class="display-1" style="color:white; text-align: center;" >Sign Up</h1>
+      <p class="lead" style="color:white; text-align: center; font-size: x-large;"> Register below to leave feedbacks about your experience and see others' comments.</p>
 
-<form method="POST">
+      <form method="POST" style="color:white; text-align: center; font-size: x-large;">
+          {{ form.hidden_tag() }}
 
-  {{ form.hidden_tag() }}
+          {% for field in form
+             if field.widget.input_type != 'hidden' %}
+      <p>
+          {{ field.label }}
+          {{ field(class_="form-control") }}
 
-  {% for field in form
-    if field.widget.input_type != 'hidden' %}
-  <p>
-    {{ field.label }}
-    {{ field(class_="form-control") }}
+       {% for error in field.errors %}
+          <span class="form-text text-danger">{{ error }}</span>
+       {% endfor %}
+      </p>
+          {% endfor %}
 
-    {% for error in field.errors %}
-    <span class="form-text text-danger">{{ error }}</span>
-    {% endfor %}
-  </p>
-  {% endfor %}
+      <button class="btn btn-warning btn-outline-dark" type="submit">Signup</button> 
+    </form>
+    </div>
+  </section>
 
-  <button class="btn btn-primary" type="submit">Register</button>
+
 
   {%endblock%}

@@ -1,71 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-          <div class="col mb-5">
-            <div class="card h-100">
-                  <!-- Product image-->
-                  <img class="card-img-top" src="{{user.image_url}}" alt="user image" />
-                  <!-- Product details-->
-                  <div class="card-body p-4">
-                      <div class="text-center">
-                          <!-- Product name-->
-                          <h5 class="fw-bolder">{{user.first_name}} {{user.last_name}}</h5>   
-                      </div>
-                  </div>  
-
-                  <!--comment area-->   
-                  
-                    <p class="small">Favorites</p>
-                      <a href="/users/{{user.id}}/favorites">{{ user.favorites|length }}</a>
-                    
-                  
-                  
-                  <div class="card-footer p-4 pt-0 border-top-0 bg-transparent"> 
-                    {%for comment in comments%}
-                    <span class="text-muted">{{ comment.timestamp.strftime('%d %B %Y') }}</span>
-                    <p>{{comment.text}}</p>
-                  </div>
-                  {% if g.user.id != comment.user_id %}
-                  <form method="POST" action="/comments/{{ comment.id }}/favorite" class="comments-like">
-                    <button class="
-                      btn
-                      btn-sm
-                      {{'btn-primary' if message.id in likes else 'btn-secondary'}}"
-                    >
-                      <i class="fa fa-thumbs-up"></i>
-                    </button>
-                  </form>
-                  {% endif %}
-                </li>
-
-                {% if g.user %}
-                {% if g.user.id == comment.user.id %}
-                  <form method="POST"
-                        action="/comments/{{ comment.id }}/delete">
-                    <button class="btn btn-outline-danger">Delete</button>
-                  </form>
-                {% endif %}
-              {% endif %}
-              {% endfor %}
-                
-              <div class="ml-auto">
-                {% if g.user.id == user.id %}
-                <a href="/users/edit" class="btn btn-outline-secondary">Edit Profile</a>
-                <form method="POST" action="/users/delete" class="form-inline">
-                  <button class="btn btn-outline-danger ml-2">Delete Profile</button>
-                </form>
-                {%endif%}
-              </div>
-          </div>
-        
-    </div>
+<!-- Section--> 
+<section class="py-5" style="background-color:black">
+  <h1 style="color:white; text-align: center;">My Profile </h1>
   
-</section>
+  <div class="container" style="max-width: 720px;"> 
+    <div class="row">
+      <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
+        <div class="card"  style="background-color: rgb(182, 241, 241);">
+          <img class="card-img-top" src= {{user.image_url}} alt="Card image cap">
+          <div class="card-body" style="flex:auto; padding:10px;">
+            <h5 class="card-title" style="text-align:center; color:rgb(12, 12, 122);">{{user.first_name}} {{user.last_name}}</h5>
+            <p class="card-text"> My Favorites <a href="/users/{{user.id}}/favorites">{{ user.favorites|length }}</a></p>
+          
+            <form method="POST" action="/comments/new">
+              <p style="color:black;"> Share your experience!</p>
+              <button class="btn btn-warning"> Add A Feedback </button>
+            </form>
+            <div>
+            <ul style="margin-top:20px;"> 
+              {%for comment in comments%} 
+              <li style="margin-top:20px;">{{comment.text}} </li>
+              <p>{{ comment.timestamp.strftime('%d %B %Y') }}</p>
+              {% if g.user.id != comment.user_id %}
+              <form method="POST" action="/comments/{{ comment.id }}/favorite" class="comments-favorite">
+                <button class="btn btn-sm {{'btn-primary' if comment.id in favorites else 'btn-secondary'}}">
+                  <i class="fa fa-thumbs-up"></i>
+                </button>
+              </form>
+          {% endif %}
+
+          {% if g.user %}
+          {% if g.user.id == comment.user.id %}
+          <form method="POST" action="/comments/{{ comment.id }}/delete">
+            <button class="btn btn-link">Delete</button>
+          </form>
+          {% endif %}
+          {% endif %}
+          {%endfor%} 
+        
+            </ul>   
+
+      <div>
+          {% if g.user.id == user.id %}
+          <div class="button-box col-lg-12" style="text-align:center; margin-top:20px;">
+          <a href="/users/edit" class="btn btn-info btn-outline-dark" role="button">Edit Profile</a>
+          <form method="POST" action="/users/delete" class="form-inline">
+            <button class="btn btn-danger btn-outline-dark" role="button">Delete Profile</button>
+          </form>
+    </div>
+          {%endif%}
+  </div>
+</section> 
+
+
 
 {%endblock%}
 

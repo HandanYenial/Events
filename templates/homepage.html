@@ -2,43 +2,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <!-- Section-->
-        <div>
-          <h1> Let's explore more!</h1>
-          <p> Search for events in your area, leave comments about your experience and more...</p>
-          <p> Start now!</p>
-          <div><a class="btn btn-info btn-outline-dark mt-auto" href="/events">Search Events</a></div>
-        </div>
-        <section class="py-5">
-          {% for event in events %} 
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-                  <div class="col mb-5">
-                    <div class="card h-100">
-                          <!-- Product image-->
-                          <img class="card-img-top" src={{event.images}} alt="..." />
-                          <!-- Product details-->
-                          <div class="card-body p-4">
-                              <div class="text-center">
-                                  <!-- Product name-->
-                                  <h5 class="fw-bolder">{{event.name }}</h5>
-                                  <!-- Product price-->
-                                  {{ event.dates.start.localDate }}
-                              </div>
-                          </div>
-                          <!-- Product actions-->
-                          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-warning btn-outline-dark mt-auto" href="{{event.url}}">Details and Tickets</a></div>
-                          </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                           
-                        </div>
-                      </div>
-                  </div>
+        
+        <!-- Section--> 
+        <section class="py-5" style="background-color:black">
+         
+          <div class="container"> 
+           
+          <div class="row">
+            {% for event in events %}    
+          <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
+          <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));">
+            <img class="card-img-top" src={{event.images}} alt="Card image cap">
+            <div class="card-body" style="flex:auto; padding:10px;">
+              <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
+              <p class="card-text" style="text-align: center;">{{ event.dates.start.localDate }}</p>
+              <p class="card-text"> <b> Ticket Sales End Date&Time:  </b>{{ event.sales.public.endDateTime}}</p>
+              <p class="card-text"> <b>Family Friendly : </b>{{ event.classifications.primary}}</p>
+              <p class="card-text"> <b>Genre : </b>{{ event.classifications.genre.name }}</p>
+              
+              <a href="{{event.url}}" class="btn btn-warning" > Tickets </a>
             </div>
-            {%endfor%}
+          </div>
+          </div>
+          {%endfor%} 
+          </div>
+          
+        </div>
+        
         </section>
 {%endblock%}
 
