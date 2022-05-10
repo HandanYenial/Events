@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, flash, session, jsonify,requ
 #from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
+from dateutil import parser
 
 from models import db, connect_db, User, Comment, Event, Favorite, Venue, bcrypt
 from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm
@@ -83,43 +84,13 @@ def search():
                 event_dic['dates'] = event['dates']
                 event_dic['images'] = event['images'][2]['url'] 
                 event_dic['classifications']  = event['classifications'][0]
-                event_dic['sales'] = event['sales']
                 #print(event_dic['images'])
+                py_date = parser.parse(event['sales']['public']['endDateTime'])
+                event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
                 events.append(event_dic)
     
 
     return render_template("index.html" , form=form, events=events)
-
-##########can't do this!!
-
-@app.route("/events/<int:event_id>" , methods=["GET"])
-def show_event_details(event_id):
-    """Show details of an event"""
-    events=[]
-   
-    event_list = requests.get(API_BASE_URL, params={'id': 'event.id'})
-    my_list = event_list.json() #this is a dictionary
-    #print(my_list['page']['totalElements'])
-
-    if my_list['page']['totalElements'] != 0:
-        for event in my_list['_embedded']['events']:
-            event_dic = {}
-            event_dic['name'] = event['name']
-            event_dic['url'] = event['url']
-            event_dic['dates'] = event['dates']
-            event_dic['images'] = event['images'][2]['url']
-            event_dic['seatmap'] = event['seatmap']['staticUrl']
-            event_dic['sales'] = event['sales']
-           
-            
-
-
-            #print(event_dic['images'])
-          
-            events.append(event_dic)
-
-    return render_template("event_info.html" ,events=events, event_list=event_list,my_list=my_list )
-
 
   
 ##############################################################################

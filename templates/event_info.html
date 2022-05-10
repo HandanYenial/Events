@@ -110,7 +110,7 @@
                 <p>{{ event.dates.start.localDate }}</p>
                 <img src={{event.seatmap}}>{{ event.seatmap }}</p>
                 <p class="card-text"> Ticket Sales End Date&Time:{{ event.sales.public.endDateTime}}</p>
-                <p class="card-text"> Family Friendly : {{ event.classifications.primary}}</p>
+                <p class="card-text"> Family Friendly : {{ 'Yes' if event.classifications.family == True else 'No' }}</p>
                 <p class="card-text"> Genre : {{ event.classifications.genre.name }}</p>
                 
                 <a href="{{event.url}}" class="btn btn-warning"> Tickets </a>
