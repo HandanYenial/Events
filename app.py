@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
 from dateutil import parser
 
-from models import db, connect_db, User, Comment, Event, Favorite, Venue, bcrypt
+from models import db, connect_db, User, Comment, Event, Wishlist, Venue, bcrypt
 from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm
 import requests
 import json
@@ -60,23 +60,19 @@ def show_homepage():
 @app.route('/events', methods=['GET','POST'])
 def search():
     """Search for events by using a keyword and a city name"""
-
+  
     form = SearchForm()
     events = []
-    
     if form.validate_on_submit():
         text = form.text.data
         e_city = form.e_city.data 
         search_items = {'keyword' : text , 'city':e_city} 
         result = requests.get(API_BASE_URL, params=search_items)
-        
-
         my_list = result.json() #this is a dictionary
         #print(my_list['page']['totalElements'])
 
-       
         if my_list['page']['totalElements'] != 0:
-            
+           
             for event in my_list['_embedded']['events']:
                 event_dic = {}
                 event_dic['name'] = event['name']
@@ -84,14 +80,15 @@ def search():
                 event_dic['dates'] = event['dates']
                 event_dic['images'] = event['images'][2]['url'] 
                 event_dic['classifications']  = event['classifications'][0]
+                event_dic['id'] = event['id']
                 #print(event_dic['images'])
                 py_date = parser.parse(event['sales']['public']['endDateTime'])
                 event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
                 events.append(event_dic)
-    
-
+                
+                
+ 
     return render_template("index.html" , form=form, events=events)
-
   
 ##############################################################################
 #The before_request decorator allows us to create a function that will run before each request.
@@ -189,20 +186,44 @@ def show_user(user_id):
                 .order_by(Comment.timestamp.desc())
                 .limit(100)
                 .all())
-    favorites = [comment.id for comment in user.favorites]
-    return render_template('details.html', user=user, comments=comments, favorites=favorites)
+    
+    return render_template('details.html', user=user, comments=comments)
 
 
-@app.route('/users/<int:user_id>/wishlist', methods=["GET"])
-def show_user_wishlist(user_id):
+@app.route('/events/<int:event_id>/wishlist', methods=["GET"])
+def show_user_wishlist(event_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
     
+    event = Event.query.get_or_404(event_id)
+    wishlist = user.wishlist
+    return render_template('wishlist.html', event=event, wishlist=wishlist)
+
+
+@app.route('/events/<int:event_id>/wishlist', methods=["POST"])
+def add_event_wishlist(event_id):
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    wishlist_events = Event.query.get_or_404(event_id)
+    if wishlist_events.user_id == g.user.id:
+        return abort(403)
+    user_wishlist = g.user.wishlist
+
+    if wishlist_events in user_wishlist:
+        g.user.wishlist = [wishlist for wishlist in user_wishlist if wishlist != wishlist_events]
+    else:
+        g.user.wishlist.append(wishlist_events)
+    db.session.commit()
+
+    return redirect("/events")
+
+    
     user = User.query.get_or_404(user_id)
     wishlist = user.wishlist
     return render_template('wishlist.html', user=user, wishlist=wishlist)
-
 
 
 # user will add comment
@@ -268,43 +289,6 @@ def delete_comment(comment_id):
 
 
 
-@app.route('/comments/<int:comment_id>/favorite', methods=['POST'])
-def add_favorite(comment_id):
-    """Toggle a favorited comment for the currently-logged-in user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    favorited_comments = Comment.query.get_or_404(comment_id)
-    if favorited_comments.user_id == g.user.id:
-        return abort(403)
-
-    user_favorites = g.user.favorites
-
-    if favorited_comments in user_favorites:
-        g.user.favorites = [favorite for favorite in user_favorites if favorite != favorited_comments]
-    else:
-        g.user.favorites.append(favorited_comments)
-
-    db.session.commit()
-
-    return redirect("/")
-
-
-
-
-@app.route('/users/<int:user_id>/favorites', methods=["GET"])
-def show_favorites(user_id):
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    user = User.query.get_or_404(user_id)
-    return render_template('favorites.html', user=user, favorites=user.favorites)
-
-
-####doesn't let me to edit: Attribute Error AttributeError: 'NoneType' object has no attribute 'username'
 @app.route('/users/edit', methods=["GET", "POST"])
 def edit_user():
     """Edit profile for current user."""

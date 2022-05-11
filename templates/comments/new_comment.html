@@ -2,47 +2,41 @@
 
 {% block content %}
 
-
 <section style="background-color:black; color:white;">
   <container style="max-width:720px; text-align:center;">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="row justify-content-center">
+      <div class="col-md-6"> 
       <form method="POST">
         {{ form.csrf_token }}
-        <div>
-          {% if form.text.errors %}
-            {% for error in form.text.errors %}
-              <span class="text-danger">
-            {{ error }}
-          </span>
-            {% endfor %}
+      <div>
+        {% if form.text.errors %}
+        {% for error in form.text.errors %}
+        <span class="text-danger">
+        {{ error }}
+        </span>
+          {% endfor %}
           {% endif %}
-        </div>
+      </div>
         <br>
-        <div>
-            <h2> Share your experience with others! </h2> 
-        </div>
-      
-
-        <div>
-            <p style="text-align:center;"> Event Name</p> 
-            <p>{{ form.eventname }} </p>
-        </div>
-        <div>
-            <p style="text-align:center;"> City </p> 
-            <p> {{ form.city }} </p>
-        </div>
-        
-        <div>
-            <p style="text-align:center;"> Feedback </p> 
-            <p> {{ form.text(placeholder="How was your experience?", class="form-control", rows="3") }}  </p>
-        </div>
-        
-
-        <button class="btn btn-success btn-block">Add Comment!</button>
+      <div>
+        <h2> Share your experience with others! </h2> 
+      </div>
+      <div>
+        <p style="text-align:center;"> Event Name</p> 
+        <p>{{ form.eventname }} </p>
+      </div>
+      <div>
+        <p style="text-align:center;"> City </p> 
+        <p> {{ form.city }} </p>
+      </div>
+      <div>
+        <p style="text-align:center;"> Feedback </p> 
+        <p> {{ form.text(placeholder="How was your experience?", class="form-control", rows="3") }}  </p>
+      </div>
+      <button class="btn btn-success btn-block">Add Comment!</button>
       </form>
-    </div>
-  </div>
+      </div>
+   </div>
   </container>
 </section>
 

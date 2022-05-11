@@ -37,7 +37,8 @@
                       My Account</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/login">Login</a></li>
-            <li><a class="dropdown-item" href="/comments">Comments</a></li>
+            <li><a class="dropdown-item" href="/comments">Feedback</a></li>
+            <li><a class="dropdown-item" href="/users/{user.id}/wishlist">Wishlist</a></li>
             <li><a class="dropdown-item" href="/logout">Logout</a></li>
           </ul>
         </div>
@@ -97,11 +98,16 @@
         <div class="card-body" style="flex:auto; padding:10px;">
           <h5 class="card-title">{{event.name }}</h5>
           <p class="card-text">{{ event.dates.start.localDate }}</p>
-               
+          <p class="card-text">{{ event.id }}</p>    
           <p class="card-text"> Ticket Sales End Date:{{event.sales_end_date}}</p>
           <p class="card-text"> Family Friendly : {{ 'Yes' if event.classifications.family == True else 'No' }}</p>
           <p class="card-text"> Genre : {{event.classifications.genre.name}}</p>
           <a href="/events/{{event.id}}" class="btn btn-warning">Tickets</a>
+          {% if g.user.id != user_id %}
+          <form method="POST" action="/events/{{event.id}}/wishlist" class="event-wishlist">
+            <button class="btn btn-primary" type="submit"> Add Wishlist </button>
+          </form>
+          {%endif%}
         </div>
       </div>
     </div>

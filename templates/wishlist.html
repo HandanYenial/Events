@@ -7,14 +7,13 @@
 <section>
 <div class="container"> 
   <div class="row">
-  {% for event in wishlist %}    
+  {% for wishlist in user.wishlist %}    
     <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
       <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));">
         <img class="card-img-top" src={{event.images}} alt="Card image cap">
         <div class="card-body" style="flex:auto; padding:10px;">
           <h5 class="card-title">{{event.name }}</h5>
-          <p class="card-text">{{ event.dates.start.localDate }}</p>
-               
+          <p class="card-text">{{ event.dates.start.localDate }}</p>    
           <p class="card-text"> Ticket Sales End Date:{{event.sales_end_date}}</p>
           <p class="card-text"> Family Friendly : {{ 'Yes' if event.classifications.family == True else 'No' }}</p>
           <p class="card-text"> Genre : {{event.classifications.genre.name}}</p>
