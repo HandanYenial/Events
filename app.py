@@ -92,6 +92,14 @@ def search():
 
     return render_template("index.html" , form=form, events=events)
 
+# TODO
+# Create new model - user_events
+# Fields/Columns - user_id, event_id, event_name, event_url, event_date, event_image, event_classificaction, event_sales_enddate
+# Create a button on each card
+# On clicking on it, you save [POST /userevents] that to user_events
+# Placce a link under Navbar callede "Wish List"
+# On clicking on that you hit an API [GET /userevent], this give you list of events
+# You just display as ike event_list or inddex.html
   
 ##############################################################################
 #The before_request decorator allows us to create a function that will run before each request.
