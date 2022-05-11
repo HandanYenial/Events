@@ -92,14 +92,6 @@ def search():
 
     return render_template("index.html" , form=form, events=events)
 
-# TODO
-# Create new model - user_events
-# Fields/Columns - user_id, event_id, event_name, event_url, event_date, event_image, event_classificaction, event_sales_enddate
-# Create a button on each card
-# On clicking on it, you save [POST /userevents] that to user_events
-# Placce a link under Navbar callede "Wish List"
-# On clicking on that you hit an API [GET /userevent], this give you list of events
-# You just display as ike event_list or inddex.html
   
 ##############################################################################
 #The before_request decorator allows us to create a function that will run before each request.
@@ -201,14 +193,15 @@ def show_user(user_id):
     return render_template('details.html', user=user, comments=comments, favorites=favorites)
 
 
-@app.route('/users/<int:user_id>/favorites', methods=["GET"])
-def show_likes(user_id):
+@app.route('/users/<int:user_id>/wishlist', methods=["GET"])
+def show_user_wishlist(user_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-
+    
     user = User.query.get_or_404(user_id)
-    return render_template('favorites.html', user=user, favorites=user.favorites)
+    wishlist = user.wishlist
+    return render_template('wishlist.html', user=user, wishlist=wishlist)
 
 
 

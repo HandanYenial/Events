@@ -24,7 +24,7 @@ class User(db.Model):
     last_name  = db.Column(db.String(30) , nullable = False)
     img_url    = db.Column(db.String , default = "static/images/icon.png")
     comments   = db.relationship('Comment', cascade ='all,delete' )
-    favorites   = db.relationship('Comment' , secondary ="favorites" )
+    wishlist   = db.relationship('Event' , secondary ="wishlist" )
     
 
     def __repr__(self):
@@ -98,7 +98,7 @@ class Event(db.Model):
     info        = db.Column(db.String , nullable =False)
     image       = db.Column(db.Integer , db.ForeignKey('images.id'))
     venue       = db.Column(db.Integer , db.ForeignKey('venues.id'), nullable = False , default = tba)
-    
+    wishlist    = db.relationship('Wishlist')
 
 
 class Favorite(db.Model):
@@ -125,8 +125,20 @@ class Image(db.Model):
     id  = db.Column(db.Integer , primary_key = True)
     url = db.Column(db.String , nullable=True , default= img)
     event_id = db.relationship('Event' , cascade ='all,delete')
-    
-   
+
+
+class Wishlist(db.Model):
+    __tablename__ = "wishlist"
+
+    id = db.Column(db.Integer , primary_key = True)
+    event_id = db.Column(db.Integer , db.ForeignKey('events.id'))
+    user_id = db.Column(db.Integer , db.ForeignKey('users.id'))
+    event_name = db.Column(db.String)
+    event_url = db.Column(db.String)
+    event_date = db.Column(db.Integer)
+    event_image = db.Column(db.String) 
+    event_classifications = db.Column(db.String)
+    event_sales_enddate = db.Column(db.String)
 
 def connect_db(app):
     db.app = app
