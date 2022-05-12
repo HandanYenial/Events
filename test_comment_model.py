@@ -45,7 +45,7 @@ class UserModelTestCase(TestCase):
         db.drop_all()
         db.create_all()
 
-        self.uid = 123456
+        self.uid = 11225566
         u = User.signup("user1" , "testing@test.com" , "password", "image.url","userfirst","userlast")
         u.id = self.uid
 
