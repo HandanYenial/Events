@@ -21,14 +21,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///event_db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config["SQLALCHEMY_ECHO"] = True
-app.config['SECRET_KEY'] = "V8xmuK0Fcu0GNPnv"
+app.config['SECRET_KEY'] = "secret1234"
 #app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 connect_db(app)
 #toolbar = DebugToolbarExtension(app)
 
 
-
-#######################################################################
+########### API routes ################
 
 @app.route("/" , methods = ["GET"]) 
 def show_homepage():
@@ -49,14 +48,14 @@ def show_homepage():
             event_dic['images'] = event['images'][2]['url'] 
             event_dic['classifications']  = event['classifications'][0]
             event_dic['sales'] = event['sales']
-
-            #print(event_dic['images'])
+            py_date = parser.parse(event['sales']['public']['endDateTime'])
+            event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
           
             events.append(event_dic)
 
     return render_template("homepage.html" ,events=events, event_list=event_list,my_list=my_list )
 
-####################   API    ##############
+
 @app.route('/events', methods=['GET','POST'])
 def search():
     """Search for events by using a keyword and a city name"""
@@ -68,7 +67,7 @@ def search():
         e_city = form.e_city.data 
         search_items = {'keyword' : text , 'city':e_city} 
         result = requests.get(API_BASE_URL, params=search_items)
-        my_list = result.json() #this is a dictionary
+        my_list = result.json() # dictionary
         #print(my_list['page']['totalElements'])
 
         if my_list['page']['totalElements'] != 0:
@@ -81,13 +80,10 @@ def search():
                 event_dic['images'] = event['images'][2]['url'] 
                 event_dic['classifications']  = event['classifications'][0]
                 event_dic['id'] = event['id']
-                #print(event_dic['images'])
                 py_date = parser.parse(event['sales']['public']['endDateTime'])
                 event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
                 events.append(event_dic)
                 
-                
- 
     return render_template("index.html" , form=form, events=events)
   
 ##############################################################################
@@ -117,7 +113,6 @@ def do_logout():
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
-#################################################################################
 
 @app.route('/signup' , methods = ['GET' , 'POST'])
 def signup():
@@ -160,7 +155,6 @@ def login():
     if form.validate_on_submit():
         user = User.authenticate(form.username.data,
                                  form.password.data)
-
         if user:
             do_login(user)
             flash(f"Hello, {user.username}!", "success")
@@ -170,6 +164,19 @@ def login():
 
     return render_template('login.html', form=form)
 
+
+@app.route('/logout')
+def logout():
+    """Logout the user
+    Clear any information from the session"""
+    
+    session.pop('username' , None)
+
+    flash("Log in to access your account", 'success')
+    return redirect("/login")
+
+
+######################  User Routes  ##############################
 
 @app.route('/users/<int:user_id>')
 def show_user(user_id):
@@ -189,6 +196,48 @@ def show_user(user_id):
     
     return render_template('details.html', user=user, comments=comments)
 
+
+@app.route('/users/edit', methods=["GET", "POST"])
+def edit_user():
+    """Edit profile for current user."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    user = g.user
+    form = UserEditForm(obj=user)
+
+    if form.validate_on_submit():
+        if User.authenticate(user.username, form.password.data):
+            user.username = form.username.data
+            user.email = form.email.data
+            user.image_url = form.image_url.data or "/static/images/icon.png"
+
+            db.session.commit()
+            return redirect(f"/users/{user.id}")
+
+        flash("Wrong password, please try again.", 'danger')
+
+    return render_template('edit.html', form=form , user=user)
+
+
+@app.route('/users/delete', methods=["POST"])
+def delete_user():
+    """Delete user."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    do_logout()
+
+    db.session.delete(g.user)
+    db.session.commit()
+
+    return redirect("/signup") 
+
+################### Events-Wishlist Routes ################
 
 @app.route('/events/<int:event_id>/wishlist', methods=["GET"])
 def show_user_wishlist(event_id):
@@ -220,20 +269,15 @@ def add_event_wishlist(event_id):
 
     return redirect("/events")
 
-    
     user = User.query.get_or_404(user_id)
     wishlist = user.wishlist
     return render_template('wishlist.html', user=user, wishlist=wishlist)
 
-
-# user will add comment
+#################### Comments Routes #########################
 
 @app.route('/comments/new', methods=["GET", "POST"])
 def add_comment():
-    """Add a comment:
-
-    Show form if GET. If valid, update comment and redirect to user page.
-    """
+    """Add a comment"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
@@ -243,9 +287,9 @@ def add_comment():
 
     if form.validate_on_submit(): 
         comment = Comment(text=form.text.data,
-                          
                           eventname = form.eventname.data,
                           city= form.city.data)
+
         g.user.comments.append(comment)
         db.session.commit()
 
@@ -256,15 +300,10 @@ def add_comment():
 
 @app.route('/comments')
 def show_all_comments():
+    """Show all comments sorted by the dates"""
+
     comments = Comment.query.order_by(Comment.timestamp.desc()).all()
     return render_template('comments/show_comments.html' , comments=comments)
-
-
-@app.route('/comments/<int:comment_id>' , methods=["GET"])
-def show_comment(comment_id):
-    """Show a comment with the given comment id"""
-    comment = Comment.query.get_or_404(comment_id)
-    return render_template('comments/show_a_comment.html' ,comment=comment)
 
 
 
@@ -287,59 +326,8 @@ def delete_comment(comment_id):
 
     return redirect(f"/users/{g.user.id}")
 
-
-
-@app.route('/users/edit', methods=["GET", "POST"])
-def edit_user():
-    """Edit profile for current user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    user = g.user
-    form = UserEditForm(obj=user)
-
-    if form.validate_on_submit():
-        if User.authenticate(user.username, form.password.data):
-            user.username = form.username.data
-            user.email = form.email.data
-            user.image_url = form.image_url.data or "/static/images/icon.png"
-            
-            
-            db.session.commit()
-            return redirect(f"/users/{user.id}")
-
-        flash("Wrong password, please try again.", 'danger')
-
-    return render_template('edit.html', form=form , user=user)
-###########################################33
-
-#delete the user
-@app.route('/users/delete', methods=["POST"])
-def delete_user():
-    """Delete user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    do_logout()
-
-    db.session.delete(g.user)
-    db.session.commit()
-
-    return redirect("/signup")  
    
-@app.route('/logout')
-def logout():
-    """Logout the user
-    Clear any information from the session"""
-    
-    session.pop('username' , None)
 
-    flash("Log in to access your account", 'success')
-    return redirect("/login")
 
 
 

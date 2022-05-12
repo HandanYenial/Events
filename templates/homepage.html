@@ -13,7 +13,7 @@
             <div class="card-body" style="flex:auto; padding:10px;">
               <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
               <p class="card-text" style="text-align: center;">{{ event.dates.start.localDate }}</p>
-              <p class="card-text"> <b> Ticket Sales End Date&Time:  </b>{{ event.sales.public.endDateTime}}</p>
+              <p class="card-text"> Ticket Sales End Date:{{event.sales_end_date}}</p>
               <p class="card-text"> <b>Family Friendly : </b>{{ event.classifications.primary}}</p>
               <p class="card-text"> <b>Genre : </b>{{ event.classifications.genre.name }}</p>
               <a href="{{event.url}}" class="btn btn-warning" > Tickets </a>
