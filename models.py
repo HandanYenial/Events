@@ -90,7 +90,7 @@ class Comment(db.Model):
 class Event(db.Model):
     __tablename__ = 'events'
 
-    id          = db.Column(db.Integer, primary_key=True, autoincrement=True ) 
+    id          = db.Column(db.Integer, primary_key=True)
     name        = db.Column(db.String , nullable=False)
     url         = db.Column(db.String , nullable = False)
     dates       = db.Column(db.DateTime , nullable = False , default = tba)
@@ -130,7 +130,7 @@ class Image(db.Model):
 class Wishlist(db.Model):
     __tablename__ = "wishlist"
 
-    id = db.Column(db.Integer , primary_key = True)
+    id = db.Column(db.Integer , primary_key = True, autoincrement=True )
     event_id = db.Column(db.Integer , db.ForeignKey('events.id'))
     user_id = db.Column(db.Integer , db.ForeignKey('users.id'))
     event_name = db.Column(db.String)

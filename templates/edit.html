@@ -6,38 +6,31 @@
   <div class="row justify-content-md-center" >
     <div class="col-md-4">
       <h1 class="join-message" style="margin:40px;">Edit Your Profile</h1>
+
       <form method="POST" id="user_form" style="margin:20px;">
-
-        {{ form.hidden_tag() }}
-
-        {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
-
+      {{ form.hidden_tag() }}
+      {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
         {% for error in field.errors %}
-
-          <div style="margin:20px;">
+        <div style="margin:20px;">
             <span class="text-danger">{{ error }}</span>
-          </div>
-
+        </div>
         {% endfor %}
         <p style="margin:20px;">   {{ field(placeholder=field.label.text, class="form-control") }} </p>
-       
-        {% endfor %}
-
+      {% endfor %}
         <p style="margin:20px;">To confirm changes, enter your password:</p>
         {% if form.password.errors %}
           {% for error in form.password.errors %}
-            <span class="text-danger">
+          <span class="text-danger">
             {{ error }}
           </span>
           {% endfor %}
         {% endif %}
-        <p style="margin:20px;"> {{ form.password(placeholder="Enter your password to confirm", class="form-control") }} </p>
-        
+         <p style="margin:20px;"> {{ form.password(placeholder="Enter your password to confirm", class="form-control") }} </p>
 
-        <div class="edit-btn-area" style="margin:20px;">
-          <button class="btn btn-success">Edit this user!</button>
-          <a href="/users/{{ user_id }}" class="btn btn-outline-secondary">Cancel</a>
-        </div>
+      <div class="edit-btn-area" style="margin:20px;">
+        <button class="btn btn-success">Edit this user!</button>
+        <a href="/users/{{ user_id }}" class="btn btn-outline-secondary">Cancel</a>
+      </div>
       </form>
     </div>
   </div>

@@ -2,30 +2,28 @@
 
 {% block content %}
 
-
-  <section class="py-5" style="background-color:black">
-    <div class="container-sm"> 
-      <h1 class="display-1" style="color:white; text-align: center;" >Login</h1>
-      <p class="lead" style="color:white; text-align: center; font-size: x-large;"> Welcome Back!</p>
-
-      <form action="/login" method="POST" style="color:white; text-align: center; font-size: x-large;">
-          {{ form.hidden_tag() }}
-
-          {% for field in form
+<section class="py-5" style="background-color:black">
+  <div class="container-sm"> 
+    <h1 class="display-1" style="color:white; text-align: center;" >Login</h1>
+    <p class="lead" style="color:white; text-align: center; font-size: x-large;"> Welcome Back!</p>
+    <form action="/login" method="POST" style="color:white; text-align: center; font-size: x-large;">
+      {{ form.hidden_tag() }}
+      {% for field in form
              if field.widget.input_type != 'hidden' %}
       <p>
-          {{ field.label }}
-          {{ field(class_="form-control") }}
+        {{ field.label }}
+        {{ field(class_="form-control") }}
+        {% for error in field.errors %}
 
-       {% for error in field.errors %}
-          <span class="form-text text-danger">{{ error }}</span>
-       {% endfor %}
-      </p>
-          {% endfor %}
+        <span class="form-text text-danger">{{ error }}</span>
 
-    <button class="btn btn-warning btn-outline-dark" type="submit">Login</button> 
+        {% endfor %}
+     </p>
+        {% endfor %}
+
+      <button class="btn btn-warning btn-outline-dark" type="submit">Login</button> 
     </form>
-    </div>
-  </section>
+  </div>
+</section>
 
   {%endblock%}

@@ -4,7 +4,6 @@
 <!-- Section--> 
 <section class="py-5" style="background-color:black">
   <h1 style="color:white; text-align: center;">My Profile </h1>
-  
   <div class="container" style="max-width: 720px;"> 
     <div class="row">
       <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
@@ -12,23 +11,25 @@
           <img class="card-img-top" src= {{user.image_url}} alt="Card image cap">
           <div class="card-body" style="flex:auto; padding:10px;">
             <h5 class="card-title" style="text-align:center; color:rgb(12, 12, 122);">{{user.first_name}} {{user.last_name}}</h5>
-            <p class="card-text"> My Favorites <a href="/users/{{user.id}}/favorites">{{ user.favorites|length }}</a></p>
-          
+            
             <form method="POST" action="/comments/new">
               <p style="color:black;"> Share your experience!</p>
               <button class="btn btn-warning"> Add A Feedback </button>
             </form>
-            <div>
+          <div>
             <ul style="margin-top:20px;"> 
               {%for comment in comments%} 
               <li style="margin-top:20px;">{{comment.text}} </li>
               <p>{{ comment.timestamp.strftime('%d %B %Y') }}</p>
               {% if g.user.id != comment.user_id %}
+              
+  <!--I WILL ADD HERE MY WISHLIST
               <form method="POST" action="/comments/{{ comment.id }}/favorite" class="comments-favorite">
                 <button class="btn btn-sm {{'btn-primary' if comment.id in favorites else 'btn-secondary'}}">
                   <i class="fa fa-thumbs-up"></i>
                 </button>
               </form>
+  -->            
           {% endif %}
 
           {% if g.user %}
