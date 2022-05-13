@@ -131,14 +131,16 @@ class Wishlist(db.Model):
     __tablename__ = "wishlist"
 
     id = db.Column(db.Integer , primary_key = True, autoincrement=True )
-    event_id = db.Column(db.Integer , db.ForeignKey('events.id'))
-    user_id = db.Column(db.Integer , db.ForeignKey('users.id'))
-    event_name = db.Column(db.String)
-    event_url = db.Column(db.String)
-    event_date = db.Column(db.Integer)
-    event_image = db.Column(db.String) 
-    event_classifications = db.Column(db.String)
-    event_sales_enddate = db.Column(db.String)
+    owner = db.Column(db.Integer, db.ForeignKey('users.id'))
+    w_event = db.relationship('Wishlist_Event' , cascade = "all,delete")
+   
+class Wishlist_Event(db.Model):
+    __tablename__ = "wishlisted_events"
+
+    id = db.Column(db.Integer , primary_key = True, autoincrement=True )
+    wishlist_id = db.Column(db.Integer , db.ForeignKey('wishlist.id' , ondelete=("CASCADE")))
+    event_id= db.Column(db.Integer , nullable = False)
+
 
 def connect_db(app):
     db.app = app
