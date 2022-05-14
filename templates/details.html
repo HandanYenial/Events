@@ -11,7 +11,9 @@
           <img class="card-img-top" src= {{user.image_url}} alt="Card image cap">
           <div class="card-body" style="flex:auto; padding:10px;">
             <h5 class="card-title" style="text-align:center; color:rgb(12, 12, 122);">{{user.first_name}} {{user.last_name}}</h5>
-            
+          <div>
+            <a href="/wishlists/new" class="btn btn-warning" > My Wishlists </a>
+          </div>
             <form method="POST" action="/comments/new">
               <p style="color:black;"> Share your experience!</p>
               <button class="btn btn-warning"> Add A Feedback </button>

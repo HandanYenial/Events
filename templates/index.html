@@ -105,7 +105,7 @@
 
           <a href="{{event.url}}" class="btn btn-warning">Tickets</a>
 
-          {% if g.user.id != user_id %}
+          {% if g.user.id == user_id %}
           <form method="POST" action="/events/{{event.id}}/wishlist" class="event-wishlist">
             <button class="btn btn-primary" type="submit"> Add Wishlist </button>
           </form>

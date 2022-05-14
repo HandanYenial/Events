@@ -24,7 +24,7 @@ class User(db.Model):
     last_name  = db.Column(db.String(30) , nullable = False)
     img_url    = db.Column(db.String , default = "static/images/icon.png")
     comments   = db.relationship('Comment', cascade ='all,delete' )
-    wishlist   = db.relationship('Event' , secondary ="wishlist" )
+    wishlist   = db.relationship('Wishlist' , cascade ='all,delete' )
     
 
     def __repr__(self):
@@ -128,20 +128,17 @@ class Image(db.Model):
 
 
 class Wishlist(db.Model):
-    __tablename__ = "wishlist"
+    __tablename__ = "wishlists"
 
     id = db.Column(db.Integer , primary_key = True, autoincrement=True )
-    owner = db.Column(db.Integer, db.ForeignKey('users.id'))
-    w_event = db.relationship('Wishlist_Event' , cascade = "all,delete")
+    #user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    #event_id = db.Column(db.Integer, ForeignKey('events.id'))
+    event_name = db.Column(db.String)
+    event_url = db.Column(db.String)
+    event_date = db.Column(db.DateTime)
+    event_image =db.Column(db.String)
+
    
-class Wishlist_Event(db.Model):
-    __tablename__ = "wishlisted_events"
-
-    id = db.Column(db.Integer , primary_key = True, autoincrement=True )
-    wishlist_id = db.Column(db.Integer , db.ForeignKey('wishlist.id' , ondelete=("CASCADE")))
-    event_id= db.Column(db.Integer , nullable = False)
-
-
 def connect_db(app):
     db.app = app
     db.init_app(app)

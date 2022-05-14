@@ -6,8 +6,8 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
 from dateutil import parser
 
-from models import db, connect_db, User, Comment, Event, Wishlist, Venue, bcrypt
-from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm
+from models import db, connect_db, User, Comment, Wishlist, Venue, bcrypt
+from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm, WishlistForm
 import requests
 import json
 
@@ -32,6 +32,7 @@ connect_db(app)
 @app.route("/" , methods = ["GET"]) 
 def show_homepage():
     """Show homepage with events limit is 20"""
+    
     events=[]
     #item = {"keyword":"rock"}
     event_list = requests.get(API_BASE_URL)
@@ -53,7 +54,7 @@ def show_homepage():
           
             events.append(event_dic)
 
-    return render_template("homepage.html" ,events=events, event_list=event_list,my_list=my_list )
+    return render_template("homepage.html" ,events=events, event_list=event_list,my_list=my_list)
 
 
 @app.route('/events', methods=['GET','POST'])
@@ -239,12 +240,12 @@ def delete_user():
 
 ################### Events-Wishlist Routes ################
 
+
 @app.route('/events/<int:event_id>/wishlist', methods=["GET"])
 def show_user_wishlist(event_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
-        return redirect("/")
-    
+        return redirect("/") 
     event = Event.query.get_or_404(event_id)
     wishlist = user.wishlist
     return render_template('wishlist.html', event=event, wishlist=wishlist)
@@ -255,7 +256,6 @@ def add_event_wishlist(event_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-
     wishlist_events = Event.query.get_or_404(event_id)
     if wishlist_events.user_id == g.user.id:
         return abort(403)
@@ -269,9 +269,7 @@ def add_event_wishlist(event_id):
 
     return redirect("/events")
 
-    user = User.query.get_or_404(user_id)
-    wishlist = user.wishlist
-    return render_template('wishlist.html', user=user, wishlist=wishlist)
+
 
 #################### Comments Routes #########################
 
