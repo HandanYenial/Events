@@ -7,7 +7,7 @@ from werkzeug.exceptions import Unauthorized
 from dateutil import parser
 
 from models import db, connect_db, User, Comment, Wishlist, Venue, bcrypt
-from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm, WishlistForm
+from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm
 import requests
 import json
 

@@ -131,8 +131,8 @@ class Wishlist(db.Model):
     __tablename__ = "wishlists"
 
     id = db.Column(db.Integer , primary_key = True, autoincrement=True )
-    #user_id = db.Column(db.Integer, ForeignKey('users.id'))
-    #event_id = db.Column(db.Integer, ForeignKey('events.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
     event_name = db.Column(db.String)
     event_url = db.Column(db.String)
     event_date = db.Column(db.DateTime)
