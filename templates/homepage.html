@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,9 +12,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4b1a2b1b23.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Radio+Canada:wght@500&display=swap" rel="stylesheet">
+    
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <body style="font-family: 'Radio Canada', sans-serif;">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-family: 'Radio Canada', sans-serif;">
       <div class="container-fluid">
         <img src="/static/images/e.logo.jpg"alt="" width="30" height="24" class="d-inline-block align-text-top">
         <a class="navbar-brand" href="/">Events</a>
@@ -27,14 +32,12 @@
             <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="/events">Search</a></li>
             <li class="nav-item"><a class="nav-link" href="/signup">Signup</a></li>
-            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       My Account</a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                
                 <li><a class="dropdown-item" href="/login">Login</a></li>
                 <li><a class="dropdown-item" href="/comments"> Feedback</a></li>
                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
-           
               </ul>
             </li>
           </ul>
@@ -42,7 +45,7 @@
       </div>
     </nav>
 
-<header>
+<header style="font-family: 'Radio Canada', sans-serif;">
   <!-- Background image -->
   <div class="p-5 text-center bg-image"
     style="
@@ -71,21 +74,30 @@
       
 <!-- Section--> 
 <section class="py-5" style="background-color:black">
-  <div class="container"> 
+  <div class="container-fluid" style="margin-inline-start:auto;"> 
     <div class="row">
       {% for event in events %}    
-      <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
+      <div class="col col-lg-3" style="padding:30px; flex:auto; align-items: center;">
         <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));">
           <img class="card-img-top" src={{event.images}} alt="Card image cap">
             <div class="card-body" style="flex:auto; padding:10px;">
               <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
-              <p class="card-text" style="text-align: center;">{{ event.dates.start.localDate }}</p>
-              <p class="card-text"> <b>Genre : </b>{{ event.classifications.genre.name }}</p>
-              <p class="card-text"> <b>Family Friendly : </b>{{ event.classifications.primary}}</p>  
-              <p class="card-text"> <b>Ticket Sales End Date: </b> {{event.sales_end_date}} EST</p>
-              <a href="{{event.url}}" class="btn btn-warning" > Tickets </a>
-              <a href="/wishlists/new" class="btn btn-warning" > Wishlist </a>
+              <p class="card-text" style="text-align:center;"><u>{{ event.dates.start.localDate }}</u></p>
+              <p class="card-text" style="text-align:center;"> <b> {{ event.classifications.genre.name }} </b></p>
+              <p class="card-text"> <i class="fa-solid fa-people-group"></i> <b>Family Friendly:</b> {{ 'Yes' if event.classifications.family == True else 'No' }}</p>  
+              <p class="card-text">  <i class="fa-solid fa-ticket"></i> <b>Ticket Sales End Date: </b> {{event.sales_end_date}} EST</p>
+              <p class="card-text">  <b>EventID </b> {{ event.id }} </p>
 
+              <div class="container" style=" height: 50px; position: relative; color:black;">
+              <div class="center" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
+              <div class="btn-group"  >
+                <button id="slide_start_button" value="Start" class="btn btn-outline-success"  style="display: inline-block; margin-right: 5px; color:black;"> <a style="color:black;" href="{{event.url}}"><i class="fa-solid fa-ticket"></i> Tickets </a></button>
+                <form method="POST" action="/events/{{ event.id }}/wishlist">
+                <button id="slide_stop_button" value="Stop" class="btn btn-outline-warning" type="submit" style="display: inline-block; margin-right: 5px; color:black;" > <i class="fa-solid fa-clipboard-list"></i> Wishlist </button>
+                </form>
+             </div>
+             </div>
+             </div>
             </div>
         </div>
       </div>
@@ -93,6 +105,18 @@
     </div>   
   </div>
 </section>
+{% block content %}    
+{% endblock %} 
+
+  <!-- Footer-->
+  <footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Events 2022</p></div>
+  </footer>
+      <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+     
+</body>
+</html>
 
 
 

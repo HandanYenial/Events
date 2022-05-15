@@ -49,6 +49,7 @@ def show_homepage():
             event_dic['images'] = event['images'][2]['url'] 
             event_dic['classifications']  = event['classifications'][0]
             event_dic['sales'] = event['sales']
+            event_dic['id'] = event['id']
             py_date = parser.parse(event['sales']['public']['endDateTime'])
             event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
           
@@ -323,11 +324,6 @@ def delete_comment(comment_id):
     db.session.commit()
 
     return redirect(f"/users/{g.user.id}")
-
-   
-
-
-
 
 
 @app.after_request

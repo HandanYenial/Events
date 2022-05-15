@@ -15,9 +15,6 @@ class CommentForm(FlaskForm):
     eventname = StringField('Event name' , validators = [DataRequired()])
     text = TextAreaField('text' , validators=[DataRequired()])
 
-    
-    
-
 class SignUpForm(FlaskForm):
     """Form for adding users"""
 
