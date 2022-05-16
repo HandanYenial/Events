@@ -8,7 +8,7 @@ bcrypt = Bcrypt()
 img = "https://media.istockphoto.com/vectors/upcoming-events-neon-signs-vector-upcoming-events-design-template-vector-id978975308?k=20&m=978975308&s=612x612&w=0&h=HnwHCKofUyVji7q4Vqpg9VI0avrWdF8hr-nA5EATfmk="
 tba = "To be announced"
 ATTRACTION_IMG = 'https://www.google.com/url?sa=i&url=http%3A%2F%2Fspiritgeek.com%2F2016%2F01%2Fcoming-attractions-for-2016.html&psig=AOvVaw2r-0IVfJWpU8uyd_hCgts6&ust=1651117007256000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCPiclq2os_cCFQAAAAAdAAAAABAI'
-USER_ICON = "/static/images/userimage.png"
+USER_ICON = "https://icon-library.com/images/user-icon-jpg/user-icon-jpg-17.jpg"
 
 
 

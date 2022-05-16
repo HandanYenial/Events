@@ -19,7 +19,7 @@
     
   </head>
   <body style="font-family: 'Radio Canada', sans-serif;">
-
+    
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-family: 'Radio Canada', sans-serif;">
       <div class="container-fluid">
         <img src="/static/images/e.logo.jpg"alt="" width="30" height="24" class="d-inline-block align-text-top">
@@ -82,7 +82,7 @@
           <img class="card-img-top" src={{event.images}} alt="Card image cap">
             <div class="card-body" style="flex:auto; padding:10px;">
               <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
-              <p class="card-text" style="text-align:center;"><u>{{ event.dates.start.localDate }}</u></p>
+              <p class="card-text" style="text-align:center;"><u> {{ event.dates.start.localDate }}</u></p>
               <p class="card-text" style="text-align:center;"> <b> {{ event.classifications.genre.name }} </b></p>
               <p class="card-text"> <i class="fa-solid fa-people-group"></i> <b>Family Friendly:</b> {{ 'Yes' if event.classifications.family == True else 'No' }}</p>  
               <p class="card-text">  <i class="fa-solid fa-ticket"></i> <b>Ticket Sales End Date: </b> {{event.sales_end_date}} EST</p>
@@ -91,9 +91,9 @@
               <div class="container" style=" height: 50px; position: relative; color:black;">
               <div class="center" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
               <div class="btn-group"  >
-                <button id="slide_start_button" value="Start" class="btn btn-outline-success"  style="display: inline-block; margin-right: 5px; color:black;"> <a style="color:black;" href="{{event.url}}"><i class="fa-solid fa-ticket"></i> Tickets </a></button>
+                <button id="slide_start_button" value="Start" class="btn btn-outline-info"  style="display: inline-block; margin-right: 5px; color:rgb(23, 7, 94);"> <a style="color:rgb(23, 7, 94)" href="{{event.url}}"> <i class="fa-solid fa-ticket"></i>  Tickets </a></button>
                 <form method="POST" action="/events/{{ event.id }}/wishlist">
-                <button id="slide_stop_button" value="Stop" class="btn btn-outline-warning" type="submit" style="display: inline-block; margin-right: 5px; color:black;" > <i class="fa-solid fa-clipboard-list"></i> Wishlist </button>
+                <button id="slide_stop_button" value="Stop" class="btn btn-outline-warning" type="submit" style="display: inline-block; margin-right: 5px; color:black;" > <i class="fa-solid fa-clipboard-list"></i> My Event List </button>
                 </form>
              </div>
              </div>
