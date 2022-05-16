@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
         <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));"">
-          <img class="card-img-top" src= {{user.image_url}} alt="Card image cap">
+          <img class="card-img-top" src= "{{ user.img_url }}" alt="Card image cap">
           <div class="card-body" style="flex:auto; padding:10px;">
             <h2 class="card-title" style="text-align:center; color:rgb(12, 12, 122);"><u>{{user.first_name}} {{user.last_name}}</u></h2>
 
@@ -25,7 +25,7 @@
           <div class="container-fluid" style="margin:1px;">
             <ul style="margin-top:20px;"> 
               {%for comment in comments%} 
-              <li style="margin-top:20px;">{{comment.text}} </li>
+              <li style="margin-top:20px;"> <i class="fa-solid fa-comment"></i> {{comment.text}} </li>
               <p class="text-muted">{{ comment.timestamp.strftime('%d %B %Y') }}</p>
                  {% if g.user.id == comment.user.id %}  
                <form method="POST" action="/comments/{{ comment.id }}/delete">

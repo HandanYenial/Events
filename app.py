@@ -214,7 +214,7 @@ def edit_user():
         if User.authenticate(user.username, form.password.data):
             user.username = form.username.data
             user.email = form.email.data
-            user.image_url = form.image_url.data or "/static/images/icon.png"
+            user.img_url = form.img_url.data or User.img_url.default.arg,
 
             db.session.commit()
             return redirect(f"/users/{user.id}")
