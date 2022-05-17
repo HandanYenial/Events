@@ -57,7 +57,7 @@
   <div class="mask" style="background-color:rgba(247, 156, 156, 0.507);">
     <div class="d-flex justify-content-center align-items-center h-100">
       <div class="text-black">
-        <h1 class="mb-3" > Events</h1>
+        <h1 class="mb-3" style="font-size:xxx-large;" > Events</h1>
         <h4 class="mb-3">Search for events in your area, share your thoughts and more...</h4>
         <div> <a class="btn btn-dark mt-auto" href="/events" role="button">Start</a></div>
       </div>
@@ -90,11 +90,30 @@
 
               <div class="container" style=" height: 50px; position: relative; color:black;">
               <div class="center" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
-              <div class="btn-group"  >
-                <button id="slide_start_button" value="Start" class="btn btn-outline-info"  style="display: inline-block; margin-right: 5%; color:rgb(23, 7, 94);"> <a style="color:rgb(23, 7, 94)" href="{{event.url}}"> <i class="fa-solid fa-ticket"></i>  Tickets </a></button>
+              <div class="btn-group" >
+
+                <button id="slide_start_button" value="Start" class="btn btn-outline-info col mx-4 md-12"  style="appearance: button;
+                -moz-appearance: button;
+                -webkit-appearance: button;
+                text-decoration: none; 
+                font: menu; 
+                color: ButtonText;
+                
+                
+                "> <a style="color:rgb(23, 7, 94)" href="{{event.url}}"> <i class="fa-solid fa-ticket"></i>  Tickets </a></button>
+
                 <form method="POST" action="/events/{{ event.id }}/wishlist">
-                <button id="slide_stop_button" value="Stop" class="btn btn-outline-warning" type="submit" style="display:inline-block; margin-right: 5%; padding:5px; color:black;" > <i class="fa-solid fa-clipboard-list"></i> My Event List </button>
+                <button id="slide_stop_button" value="Stop" class="btn btn-outline-warning col mx-4 px-4 md-12" type="submit" style= "appearance: button;
+                -moz-appearance: button;
+                -webkit-appearance: button;
+                text-decoration: none; 
+                font: menu; 
+                color: ButtonText;
+                
+               
+                "> <i class="fa-solid fa-clipboard-list"></i> My Event List </button>
                 </form>
+
              </div>
              </div>
              </div>

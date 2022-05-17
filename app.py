@@ -130,7 +130,7 @@ def signup():
             username = form.username.data
             email = form.email.data
             password = form.password.data
-            img_url= form.img_url.data
+            img_url= form.img_url.data or User.img_url.default.arg,
             first_name = form.first_name.data
             last_name = form.last_name.data
 
@@ -139,13 +139,13 @@ def signup():
 
         except IntegrityError as e:
             flash("This username is already taken, please choose another username." , "danger")
-            return render_template('signup.html' , form=form)
+            return render_template('colorlib-regform-3/index.html' , form=form)
 
         do_login(user)
 
         return redirect(f"/users/{user.id}")
     else:
-        return render_template('signup.html' , form=form)
+        return render_template('signup/index.html' , form=form)
 
 
 @app.route('/login', methods=["GET", "POST"])
