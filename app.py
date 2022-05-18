@@ -1,15 +1,16 @@
 import os
 
 from flask import Flask, render_template, redirect, flash, session, jsonify,request,g,abort
+#import flask methods
 #from flask_debugtoolbar import DebugToolbarExtension
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError #for errors in SQLAlchemy 
 from werkzeug.exceptions import Unauthorized
-from dateutil import parser
+from dateutil import parser #for date and time
 
-from models import db, connect_db, User, Comment, Wishlist, bcrypt
-from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm, WishlistForm
-import requests
-import json
+from models import db, connect_db, User, Comment, Wishlist, bcrypt #Models used
+from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm #forms (WTForms)
+import requests # is a library for making HTTP requests to API
+import json #to add json support 
 
 CURR_USER_KEY = "curr_user"
 
@@ -17,32 +18,58 @@ API_BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events?apikey=1g89Fx2K
 
 app = Flask(__name__)
          
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///event_db"
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URI' , 'postgresql:///event_db'))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config["SQLALCHEMY_ECHO"] = True
-app.config['SECRET_KEY'] = "secret1234"
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY' , 'secret1234')
 #app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 connect_db(app)
 #toolbar = DebugToolbarExtension(app)
 
 
+
+##############################################################################
+#The before_request decorator allows us to create a function that will run before each request.
+#before_request functions are ideal for tasks such as:
+#1.openning database connections
+#2.Loading user from the session 
+#3.Working with the flask g object
+
+@app.before_request
+def add_user_to_g():
+    """ Will run before each request and if the user is logged in, it will add current user to Flask global."""
+
+    if CURR_USER_KEY in session:
+        g.user = User.query.get(session[CURR_USER_KEY]) #if the current user is in the session then set user as global user.
+
+    else:
+        g.user = None #if the current user is not in session then set global user to none.
+
+def do_login(user):
+    """Log in user."""
+    session[CURR_USER_KEY] = user.id #user's id will be same as the user's id in the session
+
+def do_logout():
+    """Logout user."""
+
+    if CURR_USER_KEY in session:
+        del session[CURR_USER_KEY] # logout the user by clearing the session
+
 ########### API routes ################
 
 @app.route("/" , methods = ["GET"]) 
 def show_homepage():
-    """Show homepage with events limit is 20"""
+    """Show homepage with random events rendered from API"""
     
-    events=[]
-    #item = {"keyword":"rock"}
-    my_event = requests.get(API_BASE_URL)
-    the_event_info = my_event.json() #this is a dictionary
-    #print(the_event_info['page']['totalElements'])
-
-    if the_event_info['page']['totalElements'] != 0:
-        for event in the_event_info['_embedded']['events']:
-            event_dic = {}
-            event_dic['name'] = event['name']
+    events=[] # having an empty array, will push the results in this array
+    my_event = requests.get(API_BASE_URL) # request data from API
+    the_event_info = my_event.json() # and convert into a json file(this is a dictionary)
+    
+    if the_event_info['page']['totalElements'] != 0: # if the result is not0-if there is a result of the request
+        for event in the_event_info['_embedded']['events']: #the API was an embedded API to reach each componentget through [_embedded][events]
+            event_dic = {} #set an empty dictionary to add the API data(data is in json format so dic is used)
+            event_dic['name'] = event['name'] #get data from API and put into the dictionary
             event_dic['url'] = event['url']
             event_dic['dates'] = event['dates']
             event_dic['images'] = event['images'][2]['url']
@@ -53,7 +80,7 @@ def show_homepage():
             py_date = parser.parse(event['sales']['public']['endDateTime'])
             event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
           
-            events.append(event_dic)
+            events.append(event_dic) 
 
     return render_template("homepage.html" ,events=events, my_event=my_event,the_event_info=the_event_info)
 
@@ -62,7 +89,7 @@ def show_homepage():
 def search():
     """Search for events by using a keyword and a city name"""
   
-    form = SearchForm()
+    form = SearchForm() #from WTforms
     events = []
     if form.validate_on_submit():
         text = form.text.data
@@ -88,44 +115,19 @@ def search():
                 
     return render_template("index.html" , form=form, events=events)
   
-##############################################################################
-#The before_request decorator allows us to create a function that will run before each request.
-#before_request functions are ideal for tasks such as:
-#1.openning database connections
-#2.Loading user from the session 
-#3.Working with the flask g object
-
-@app.before_request
-def add_user_to_g():
-    """If we're logged in, add curr user to Flask global."""
-
-    if CURR_USER_KEY in session:
-        g.user = User.query.get(session[CURR_USER_KEY])
-
-    else:
-        g.user = None
-
-def do_login(user):
-    """Log in user."""
-    session[CURR_USER_KEY] = user.id
-
-def do_logout():
-    """Logout user."""
-
-    if CURR_USER_KEY in session:
-        del session[CURR_USER_KEY]
-
 
 @app.route('/signup' , methods = ['GET' , 'POST'])
 def signup():
-    """Create the new user with username, password,email,name and lastname and add to database"""
+    """Create the new user with username, password,email,name and lastname and add to database.
+       Redirect user to user profile page.
+       If there is already a user with the same username then flash message."""
     
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
-    form = SignUpForm() #in the form.py
+    form = SignUpForm() #WTforms
 
-    if form.validate_on_submit(): #getting all the data from the form
+    if form.validate_on_submit(): #getting all the data from the form and validate
         try:
             username = form.username.data
             email = form.email.data
@@ -134,37 +136,38 @@ def signup():
             first_name = form.first_name.data
             last_name = form.last_name.data
 
-            user = User.signup(username,email,password,img_url, first_name,last_name)
+            user = User.signup(username,email,password,img_url, first_name,last_name) #calls the classmethod in Users class
             db.session.commit()
 
         except IntegrityError as e:
             flash("This username is already taken, please choose another username." , "danger")
-            return render_template('colorlib-regform-3/index.html' , form=form)
+            return render_template('signup2.html' , form=form)
 
         do_login(user)
 
-        return redirect(f"/users/{user.id}")
+        return redirect(f"/users/{user.id}") #user profile page
     else:
         return render_template('signup2.html' , form=form)
 
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    """Handle user login."""
+    """Login user with username and password.
+       Redirect user to profile page."""
 
-    form = LoginForm()
+    form = LoginForm() #use the login form- WTForms
 
     if form.validate_on_submit():
         user = User.authenticate(form.username.data,
-                                 form.password.data)
+                                 form.password.data) #authenticate the user - classmethod from Users class
         if user:
             do_login(user)
             flash(f"Hello, {user.username}!", "success")
-            return redirect(f"/users/{user.id}")
+            return redirect(f"/users/{user.id}") #user redirected to profile page
 
-        flash("Invalid credentials.", 'danger')
-
-    return render_template('login.html', form=form)
+        flash("Invalid credentials.", 'danger') #if the authentication is not successful then flash the message
+                                                
+    return render_template('login.html', form=form) 
 
 
 @app.route('/logout')
@@ -178,23 +181,22 @@ def logout():
     return redirect("/login")
 
 
-######################  User Routes  ##############################
-
 @app.route('/users/<int:user_id>')
 def show_user(user_id):
     """Show user profile."""
-    if not g.user:
+
+    if not g.user: #if user is not logged in then flash message and redirect user to homepage
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    user = User.query.get_or_404(user_id)
+    user = User.query.get_or_404(user_id) #get the user from database with user.id
     
     comments = (Comment
                 .query
                 .filter(Comment.user_id == user_id)
                 .order_by(Comment.timestamp.desc())
                 .limit(100)
-                .all())
+                .all()) #show user's comments
     
     return render_template('details.html', user=user, comments=comments)
 
@@ -203,21 +205,21 @@ def show_user(user_id):
 def edit_user():
     """Edit profile for current user."""
     
-    if not g.user:
+    if not g.user: #user needs to be logged in to edit the profile
         flash("Access unauthorized.", "danger")
         return redirect("/")
         
     user = g.user
-    form = UserEditForm(obj=user)   
+    form = UserEditForm(obj=user)   #use the UserEditForm-WTF 
 
-    if form.validate_on_submit():
+    if form.validate_on_submit():  #to validate the form the authentication should be successful.
         if User.authenticate(user.username, form.password.data):
             user.username = form.username.data
             user.email = form.email.data
             user.img_url = form.img_url.data or User.img_url.default.arg,
 
-            db.session.commit()
-            return redirect(f"/users/{user.id}")
+            db.session.commit() #commit the changes
+            return redirect(f"/users/{user.id}") #redirect user to profile page after editing the profile
 
         flash("Wrong password, please try again.", 'danger')
 
@@ -240,6 +242,7 @@ def delete_user():
     return redirect("/signup") 
 
 ################### Events-Wishlist Routes ################
+
 @app.route('/events/<event_id>/wishlist', methods=["GET" , "POST"])
 def show_user_wishlist(event_id):
 
@@ -249,7 +252,7 @@ def show_user_wishlist(event_id):
 
     events = []
     search_items = {'id' : event_id} 
-    result = requests.get(API_BASE_URL, params=search_items)
+    result = requests.get('https://app.ticketmaster.com/discovery/v2/events/{id}?apikey=1g89Fx2KHiAD3WdLaBFtpKdTxZEW2lvS')
     the_event_info = result.json() 
 
     for event in the_event_info['_embedded']['events']:
@@ -282,12 +285,12 @@ def show_user_wishlist(event_id):
 @app.route('/comments/new', methods=["GET", "POST"])
 def add_comment():
     """Add a comment"""
-    print("*******")
+    # print("*******") #to debug the routes using print
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    form = CommentForm()
+    form = CommentForm() #using form from forms.py
 
     if form.validate_on_submit(): 
         comment = Comment(text=form.text.data,
@@ -319,13 +322,13 @@ def delete_comment(comment_id):
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    comment = Comment.query.get_or_404(comment_id)
+    comment = Comment.query.get_or_404(comment_id) #retrieve the comment by comment_id
 
     if comment.user_id != g.user.id:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    db.session.delete(comment)
+    db.session.delete(comment) #delete the comment from database
     db.session.commit()
 
     return redirect(f"/users/{g.user.id}")

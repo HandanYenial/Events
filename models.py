@@ -88,23 +88,6 @@ class Comment(db.Model):
 
 
 
-class Favorite(db.Model):
-    __tablename__ = "favorites"
-
-    id       = db.Column(db.Integer, primary_key=True) 
-    user_id  = db.Column(db.Integer, db.ForeignKey('users.id'))
-    comment_id = db.Column(db.Integer,db.ForeignKey('comments.id', ondelete='cascade'))
-
-
-
-
-class Image(db.Model):
-    __tablename__ = "images"
-
-    id  = db.Column(db.Integer , primary_key = True)
-    url = db.Column(db.String , nullable=True , default= img)
-
-
 class Wishlist(db.Model):
     __tablename__ = "wishlists"
 
