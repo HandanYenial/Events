@@ -175,7 +175,7 @@ def logout():
     """Logout the user
     Clear any information from the session"""
     
-    session.pop('username' , None)
+    do_logout()
 
     flash("Log in to access your account", 'success')
     return redirect("/login")
