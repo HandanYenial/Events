@@ -3,7 +3,6 @@
 {% block content %}
 <!-- Section--> 
 
-
 <section class="py-5" style="background: -webkit-gradient(linear, left bottom, left top, from(#fbc2eb), to(#a18cd1));">
   <h1 style=" text-align: center; color:black; font-size:xx-large"> {{user.first_name}}'s Profile Page </h1>
   <div class="container" style="max-width: 720px;"> 
@@ -35,14 +34,12 @@
                <form method="POST" action="/comments/{{ comment.id }}/delete">
                 <button class="btn btn-link" style="color:rgb(167, 7, 7);"> <i class="fa-solid fa-trash-can"></i> Delete Feedback</button>
                </form>
-               
                  {% endif %}
               {%endfor%} 
             </ul>  
           </div> 
           <div>
           {% if g.user.id == user.id %}
-
         <div class="container" style=" height: 50px; position: relative; ">
           <div class="center" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
             <div class="btn-group"  >
@@ -57,8 +54,6 @@
       </div>
   </div>
 </section> 
-
-
 
 {%endblock%}
 
