@@ -15,29 +15,29 @@ The website is deployed here: ...........................
 **Event List:** Display event list for the user. 
 
 ## Tech Stack
-***Heroku*** :A container-based cloud Platform as a Service (PaaS)it is used to deploy and manage the website.
+- ***Heroku*** :A container-based cloud Platform as a Service (PaaS)it is used to deploy and manage the website.
 
-***Gunicorn:*** Python application for running multiple Python processes on Heroku.(The app is prepared on flask, with gunicorn we run it on heroku)
+- ***Gunicorn:*** Python application for running multiple Python processes on Heroku.(The app is prepared on flask, with gunicorn we run it on heroku)
 
-***Flask:***  A Python web framework with useful tools and features.
+- ***Flask:***  A Python web framework with useful tools and features.
 
-***Jinja:*** A web template engine for the Python programming language, used for creating dynamic html files.
+- ***Jinja:*** A web template engine for the Python programming language, used for creating dynamic html files.
 
-***SQLAlchemy:*** A library to obtain communication between Python programs and databases. It is used as an ORM(Objact Relational Mapper).
+- ***SQLAlchemy:*** A library to obtain communication between Python programs and databases. It is used as an ORM(Objact Relational Mapper).
 
-***WTForms:*** A python library that privides web form rendering and data validation.
+- ***WTForms:*** A python library that privides web form rendering and data validation.
 
-***PostgreSQL:*** Database, primary data storage.
+- ***PostgreSQL:*** Database, primary data storage.
 
-***Bcrypt:*** To hash the user passwords. 
+- ***Bcrypt:*** To hash the user passwords. 
 
-***HTML5:*** A markup language to structure and present content on website.
+- ***HTML5:*** A markup language to structure and present content on website.
 
-***CSS:*** To style the webpage
+- ***CSS:*** To style the webpage
 
-***Font Awesome:*** An icon set used for scalable vector images.
+- ***Font Awesome:*** An icon set used for scalable vector images.
 
-***Bootstrap5:*** To create a responsive webpage.
+- ***Bootstrap5:*** To create a responsive webpage.
 
 ## How is the Ticketmaster Api used in Events?
 **Event Search**
