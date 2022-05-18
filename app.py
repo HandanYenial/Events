@@ -202,10 +202,13 @@ def show_user(user_id):
 @app.route('/users/edit', methods=["GET", "POST"])
 def edit_user():
     """Edit profile for current user."""
-
+    
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
+        
+    user = g.user
+    form = UserEditForm(obj=user)   
 
     if form.validate_on_submit():
         if User.authenticate(user.username, form.password.data):

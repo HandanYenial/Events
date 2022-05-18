@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section style="background-color:black; color:white;">
+<section>
   <container style="max-width:720px; text-align:center;">
   <div class="row justify-content-md-center" >
     <div class="col-md-4">
@@ -28,7 +28,7 @@
          <p style="margin:20px;"> {{ form.password(placeholder="Enter your password to confirm", class="form-control") }} </p>
 
       <div class="edit-btn-area" style="margin:20px;">
-        <button class="btn btn-success">Edit this user!</button>
+        <button class="btn btn-primary"><i class="fa-solid fa-user-pen"></i> Edit Profile </button>
         <a href="/users/{{ user_id }}" class="btn btn-outline-secondary">Cancel</a>
       </div>
       </form>
