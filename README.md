@@ -75,7 +75,7 @@ __Query Parameters:__
 |/comments| Get| No|Show all comments in a table sorted by date posted.|
 |/comments/comment_id/delete| Post |Yes|Enables user to delete the comment on webpage and on database.|
 
-##Database Schema
+## Database Schema
 ![DatabaseDiagram](https://user-images.githubusercontent.com/88174651/169098721-13c7fc10-2897-4587-8c36-86def8db6e7d.png)
 
 
