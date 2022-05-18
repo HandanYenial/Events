@@ -14,7 +14,7 @@ import json #to add json support
 
 CURR_USER_KEY = "curr_user"
 
-API_BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events?apikey=1g89Fx2KHiAD3WdLaBFtpKdTxZEW2lvS'
+API_BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events?apikey={APIKEY}'
 
 app = Flask(__name__)
          
