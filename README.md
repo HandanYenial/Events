@@ -1,5 +1,7 @@
 # Events
-![event-4](https://user-images.githubusercontent.com/88174651/169121349-95bcec9e-6237-4b5e-b017-582ab899d4ad.gif)
+<img src = "https://user-images.githubusercontent.com/88174651/169122261-646682bc-e95e-44f0-b165-974fe9978c08.gif"  width="250" height="250" />
+
+
 
 Events website is designed for searching for events in your area. It lets you to search for an event in any area by using a keyword and a city name, and add your favorite events to your personalized event list.
 
