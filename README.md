@@ -41,11 +41,15 @@ The website is deployed here: ...........................
 
 ## How is the Ticketmaster Api used in Events?
 **Event Search**
-Method: GET
-Summary: Event Search
-Description: Find events and filter your search by location, date, availability, and much more.
-/discovery/v2/events
-Query Parameters:
+__Method:__ GET
+
+__Summary:__ Event Search
+
+__Description:__ Find events and filter your search by location, date, availability, and much more.
+
+__/discovery/v2/events__
+
+__Query Parameters:__
 |   Parameter      |    Description                                            |    Type    |
 -------------------|-----------------------------------------------------------|--------------|
 |     id           | Filter entities by its id                                 |    String    |
@@ -55,6 +59,23 @@ Query Parameters:
 |      city        | Filter by city                                            |    Array     |
 |classificationName| Filter by classification name: name of any segment, genre,sub-genre, type, sub-type.|     Array    |
                      
+## Events Routes 
+|     Routes     |  Method  |  Login Required  |          Details             |
+|----------------|----------|------------------|------------------------------|
+|    /signup     |Get/Post |      No          | Create and display a new user with SignUpForm built by WTForms with username,email,password,img_url(optional),first name and last name.|
+|    /login      | Get/Post |      Yes         | Display the login form built by WTForms and authenticate the user.|
+|    /logout     | Get| No| Logout the user and clear any information in the session|
+|/ users/user_id| Get| Yes|Show user profile : username, user image, user comments and links to several pages|
+|/users/edit|Get/Post|Yes|Edit profile for the user by using EditUserForm built ib WTForms|
+|/users/delete|Post|Yes|Delete user|
+|/homepage|Get|No|Displays random images around United States|
+|/events|Get/Post|No|Search for events by keyword and city name by SearchForm (WTForms) and display results in cards designed with Bootstrap5, including event image, event name,event genre,family-friendly, ticket sales end date.|
+|events/event_id/wishlist|Get/Post| Yes| Add events to user event list and display them on Event List page.Render event ids from Api and save them in the database.|
+|/comments/new|Get/Post|Yes|Display comment form(WTForms) and add comment with username|
+|/comments| Get| No|Show all comments in a table sorted by date posted.|
+|/comments/comment_id/delete| Post |Yes|Enables user to delete the comment on webpage and on database.|
+|
+
 
 
 
