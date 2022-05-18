@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import DateField, StringField, PasswordField, TextAreaField, RadioField,IntegerField, DecimalField, SelectField,EmailField
+from wtforms import StringField, PasswordField, TextAreaField, EmailField
 from wtforms.validators import DataRequired, Email, Length
 import email_validator
 
@@ -42,5 +42,3 @@ class LoginForm(FlaskForm):
 class DeleteForm(FlaskForm):
     """Delete form -- this form is intentionally blank."""
 
-class WishlistForm(FlaskForm):
-    wishlistname = StringField('Your Event List name' , validators=[DataRequired()])
