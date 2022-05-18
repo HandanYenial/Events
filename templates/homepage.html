@@ -49,17 +49,17 @@
   <!-- Background image -->
   <div class="p-5 text-center bg-image"
     style="
-      background-image: url('https://images.unsplash.com/photo-1544924751-8acb02fb5331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80');
+      background-image: url('/static/images/mic.jpg');
       background-size: cover;
-      height:400px;
+      height:300px;
       background-repeat: no-repeat;">
               
-  <div class="mask" style="background-color:rgba(247, 156, 156, 0.507);">
+  <div class="mask" >
     <div class="d-flex justify-content-center align-items-center h-100">
       <div class="text-black">
-        <h1 class="mb-3" style="font-size:xxx-large;" > Events</h1>
-        <h4 class="mb-3">Search for events in your area, share your thoughts and more...</h4>
-        <div> <a class="btn btn-dark mt-auto" href="/events" role="button">Start</a></div>
+        <h1 class="mb-3" style="font-size:500%; color:#fbc2eb" > <b> Events </b></h1>
+        <h3 class="mb-3" style="color:#fbc2eb;">Search for events in your area, share your thoughts and more...</h3>
+        <div> <a class="btn btn-warning  btn-lg mt-auto" href="/events" role="button"><i class="fas fa-hand-point-right"></i> Start</a></div>
       </div>
     </div>
   </div>
@@ -67,18 +67,17 @@
   <div class="container">
     {% for category, message in get_flashed_messages(with_categories=True) %}
     <div class="alert alert-{{ category }}">{{ message }}</div>
-    {% endfor %}       
-       
+    {% endfor %}           
   </div>
 </header>
       
 <!-- Section--> 
-<section class="py-5" style="background-color:black">
-  <div class="container-fluid" style="margin-inline-start:auto;"> 
+<section class="py-5" style="background: -webkit-gradient(linear, left bottom, left top, from(#fbc2eb), to(#a18cd1));">
+  <div class="container-fluid" style="margin-inline-start:auto; color:white;"> 
     <div class="row">
       {% for event in events %}    
       <div class="col col-lg-3" style="padding:30px; flex:auto; align-items: center;">
-        <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));">
+        <div class="card"  style="background-color:black;">
           <img class="card-img-top" src={{event.images}} alt="Card image cap">
             <div class="card-body" style="flex:auto; padding:20px;">
               <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
@@ -92,7 +91,7 @@
               <div class="center" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
               <div class="btn-group" >
 
-                <button id="slide_start_button" value="Start" class="btn btn-outline-info col mx-4 md-12"  style="appearance: button;
+                <button id="slide_start_button" value="Start" class="btn btn-info col mx-4 md-12"  style="appearance: button;
                 -moz-appearance: button;
                 -webkit-appearance: button;
                 text-decoration: none; 
@@ -102,8 +101,8 @@
                 
                 "> <a style="color:rgb(23, 7, 94)" href="{{event.url}}"> <i class="fa-solid fa-ticket"></i>  Tickets </a></button>
 
-                <form method="POST" action="/events/{{ event.id }}/wishlist">
-                <button id="slide_stop_button" value="Stop" class="btn btn-outline-warning col mx-4 px-4 md-12" type="submit" style= "appearance: button;
+                <form method="POST" action="/events/wishlist">
+                <button id="slide_stop_button" value="Stop" class="btn btn-warning col mx-4 px-4 md-12" type="submit" style= "appearance: button;
                 -moz-appearance: button;
                 -webkit-appearance: button;
                 text-decoration: none; 

@@ -41,3 +41,6 @@ class LoginForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     """Delete form -- this form is intentionally blank."""
+
+class WishlistForm(FlaskForm):
+    wishlistname = StringField('Your Event List name' , validators=[DataRequired()])

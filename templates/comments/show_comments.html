@@ -44,24 +44,25 @@
 
 
 <header>
+
   <!-- Background image -->
   <div class="p-5 text-center bg-image"
     style="
-      background-image: url('https://images.unsplash.com/photo-1544924751-8acb02fb5331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80');
+      background-image: url('/static/images/mic.jpg');
       background-size: cover;
-      height:400px;
+      height:300px;
       background-repeat: no-repeat;">
               
-    <div class="mask" style="background-color:rgba(247, 156, 156, 0.507);">
-      <div class="d-flex justify-content-center align-items-center h-100">
-        <div class="text-black">
-          <h1 class="mb-3" > Comments </h1>
-          <h4 class="mb-3"> Let everyone know about your experience!</h4>
-          <button id="slide_stop_button" value="Stop" class="btn btn-warning" style="display: inline-block; margin-right: 5px;"> <a href="/comments/new" style="color:black"><i class="fa-regular fa-comments"></i> Add A Comment </a> </button> 
-        </div>
+  <div class="mask" >
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <div class="text-black">
+        <h1 class="mb-3"  style="font-size:400%; color:#fbc2eb;" > <b> Comments </b></h1>
+        <h3 class="mb-3" style="color:#fbc2eb;"> Let everyone know about your experience! </h3>
+        <button id="slide_stop_button" value="Stop" class="btn btn-warning" style="display: inline-block; margin-right: 5px;"> <a href="/comments/new" style="color:black"><i class="fa-regular fa-comments"></i> Add A Comment </a> </button> 
       </div>
     </div>
   </div>
+
 
   <div class="container">
     {% for category, message in get_flashed_messages(with_categories=True) %}
@@ -69,41 +70,44 @@
     {% endfor %}          
   </div>  
   </header>
-<section style="background-color:black; color:white; margin:auto; align-items:center;">
-<container style="max-width:720px; text-align:center;">
-  <br>
-  <h2 style="margin:auto; text-align:center; color:rgb(250, 186, 126)"> <i class="fa-regular fa-comments"></i> Read and leave comments!  </h2>
-  <br>
-<div>
- 
-</div>
 
+
+<section style="background: -webkit-gradient(linear, left bottom, left top, from(#fbc2eb), to(#a18cd1)); color:black; margin:auto; align-items:center;">
+<container style="text-align:center;">
+  <br>
+  <h2 style="margin:auto; text-align:center; color:rgb(3, 3, 3);"> <i class="fa-regular fa-comments"></i> Read and leave comments!  </h2>
+  <br>
+  
 <div class="container" style="align-items:center">
 
-<table class="table" style="color:aliceblue; border:solid rgb(250, 186, 126); margin:30px; max-width:1140px;">
-  <thead style="color:aliceblue; border:solid rgb(250, 186, 126) ">
-    <tr style="color:aliceblue; border:solid rgb(250, 186, 126)">
-      <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">Event Name</th>
-      <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">City</th>
-      <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">Username</th>
-      <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)"> Feedback </th>
-      <th style="color:rgb(250, 186, 126); border:solid rgb(250, 186, 126)">When</th>
+<table class="table" style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3); margin:30px; max-width:1140px;">
+  <thead style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3); ">
+    <tr style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">
+      <th style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">Event Name</th>
+      <th style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">City</th>
+      <th style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">Username</th>
+      <th style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);"> Feedback </th>
+      <th style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">When</th>
     </tr>
   </thead>
+
   <tbody>
     {% for comment in comments %}
     <tr>
-      <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.eventname }}</td> 
-      <td style="color:aliceblue; border:solid rgb(250, 186, 126)" >{{ comment.city}}</td>
-      <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.user.username }}</td>
-      <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.text }}</td>
-      <td style="color:aliceblue; border:solid rgb(250, 186, 126)">{{ comment.timestamp.strftime("%H:%M:%S %d/%m/%Y") }}</td>
+      <td style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">{{ comment.eventname }}</td> 
+      <td style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);" >{{ comment.city}}</td>
+      <td style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">{{ comment.user.username }}</td>
+      <td style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">{{ comment.text }}</td>
+      <td style="color:rgb(3, 3, 3);; border:solid rgb(3, 3, 3);">{{ comment.timestamp.strftime("%H:%M:%S %d/%m/%Y") }}</td>
     </tr>
     {% endfor %}
   </tbody>
+  
 </table>
 </div>
+
 </container>
+
 </section>
 
         <!-- Footer-->
@@ -112,6 +116,7 @@
   </footer>
             <!-- Bootstrap core JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
 

@@ -6,8 +6,8 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import Unauthorized
 from dateutil import parser
 
-from models import db, connect_db, User, Comment, Wishlist, Venue, bcrypt
-from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm
+from models import db, connect_db, User, Comment, Wishlist, bcrypt
+from forms import SearchForm, CommentForm, SignUpForm, UserEditForm, LoginForm, DeleteForm, WishlistForm
 import requests
 import json
 
@@ -35,12 +35,12 @@ def show_homepage():
     
     events=[]
     #item = {"keyword":"rock"}
-    event_list = requests.get(API_BASE_URL)
-    my_list = event_list.json() #this is a dictionary
-    #print(my_list['page']['totalElements'])
+    my_event = requests.get(API_BASE_URL)
+    the_event_info = my_event.json() #this is a dictionary
+    #print(the_event_info['page']['totalElements'])
 
-    if my_list['page']['totalElements'] != 0:
-        for event in my_list['_embedded']['events']:
+    if the_event_info['page']['totalElements'] != 0:
+        for event in the_event_info['_embedded']['events']:
             event_dic = {}
             event_dic['name'] = event['name']
             event_dic['url'] = event['url']
@@ -55,7 +55,7 @@ def show_homepage():
           
             events.append(event_dic)
 
-    return render_template("homepage.html" ,events=events, event_list=event_list,my_list=my_list)
+    return render_template("homepage.html" ,events=events, my_event=my_event,the_event_info=the_event_info)
 
 
 @app.route('/events', methods=['GET','POST'])
@@ -69,12 +69,12 @@ def search():
         e_city = form.e_city.data 
         search_items = {'keyword' : text , 'city':e_city} 
         result = requests.get(API_BASE_URL, params=search_items)
-        my_list = result.json() # dictionary
-        #print(my_list['page']['totalElements'])
+        the_event_info = result.json() # dictionary
+        #print(the_event_info['page']['totalElements'])
 
-        if my_list['page']['totalElements'] != 0:
+        if the_event_info['page']['totalElements'] != 0:
            
-            for event in my_list['_embedded']['events']:
+            for event in the_event_info['_embedded']['events']:
                 event_dic = {}
                 event_dic['name'] = event['name']
                 event_dic['url'] = event['url']
@@ -145,7 +145,7 @@ def signup():
 
         return redirect(f"/users/{user.id}")
     else:
-        return render_template('signup/index.html' , form=form)
+        return render_template('signup2.html' , form=form)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -188,7 +188,7 @@ def show_user(user_id):
         return redirect("/")
 
     user = User.query.get_or_404(user_id)
-   
+    
     comments = (Comment
                 .query
                 .filter(Comment.user_id == user_id)
@@ -206,9 +206,6 @@ def edit_user():
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-
-    user = g.user
-    form = UserEditForm(obj=user)
 
     if form.validate_on_submit():
         if User.authenticate(user.username, form.password.data):
@@ -240,44 +237,49 @@ def delete_user():
     return redirect("/signup") 
 
 ################### Events-Wishlist Routes ################
-
-
-@app.route('/events/<int:event_id>/wishlist', methods=["GET"])
+@app.route('/events/<event_id>/wishlist', methods=["GET" , "POST"])
 def show_user_wishlist(event_id):
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/") 
-    event = Event.query.get_or_404(event_id)
-    wishlist = user.wishlist
-    return render_template('wishlist.html', event=event, wishlist=wishlist)
 
-
-@app.route('/events/<int:event_id>/wishlist', methods=["POST"])
-def add_event_wishlist(event_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    wishlist_events = Event.query.get_or_404(event_id)
-    if wishlist_events.user_id == g.user.id:
-        return abort(403)
-    user_wishlist = g.user.wishlist
 
-    if wishlist_events in user_wishlist:
-        g.user.wishlist = [wishlist for wishlist in user_wishlist if wishlist != wishlist_events]
-    else:
-        g.user.wishlist.append(wishlist_events)
-    db.session.commit()
+    events = []
+    search_items = {'id' : event_id} 
+    result = requests.get(API_BASE_URL, params=search_items)
+    the_event_info = result.json() 
 
-    return redirect("/events")
+    for event in the_event_info['_embedded']['events']:
+        event_dic = {}
+        event_dic['name'] = event['name']
+        event_dic['url'] = event['url']
+        # event_dic['dates'] = event['dates']
+        event_dic['images'] = event['images'][2]['url'] 
+    
+        events.append(event_dic)
+        entry = Wishlist(
+                user_id = g.user.id,
+                event_id = json.dumps(event['id']),
+                event_name = json.dumps(event['name']),
+                event_url = json.dumps(event['url']),
+               # event_date = json.dumps(event['dates']),
+                event_image = json.dumps(event['images'][2]['url']))
+
+        db.session.add(entry)
+        db.session.commit()
+
+        return render_template("wishlist.html" , form=form , events=events, the_event_info=the_event_info )
 
 
+## We have a got a dictionary with same columns/props of models
+## We need to save that to the db
 
 #################### Comments Routes #########################
 
 @app.route('/comments/new', methods=["GET", "POST"])
 def add_comment():
     """Add a comment"""
-
+    print("*******")
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -336,10 +338,17 @@ def add_header(req):
     req.headers['Cache-Control'] = 'public, max-age=0'
     return req
 
-        
-        
-
+ 
+def mapWishListObj(user_id, raw_event):
+    wishlist = {}
+    event = raw_event['_embedded']['events'][0]
+    wishlist['user_id'] = user_id
+    wishlist['event_name'] = event['name']
+    wishlist['event_url'] = event['url']
+    wishlist['event_date'] = event['dates']
+    wishlist['event_image'] = event['images'][2]['url'] 
+    # wishlist['classifications']  = event['classifications'][0]
+    wishlist['event_id'] = event['id']  
+    return wishlist 
 
        
-
-

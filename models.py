@@ -87,19 +87,6 @@ class Comment(db.Model):
     user = db.relationship('User')
 
 
-class Event(db.Model):
-    __tablename__ = 'events'
-
-    id          = db.Column(db.Integer, primary_key=True)
-    name        = db.Column(db.String , nullable=False)
-    url         = db.Column(db.String , nullable = False)
-    dates       = db.Column(db.DateTime , nullable = False , default = tba)
-    attractions = db.Column(db.String , nullable = False)
-    info        = db.Column(db.String , nullable =False)
-    image       = db.Column(db.Integer , db.ForeignKey('images.id'))
-    venue       = db.Column(db.Integer , db.ForeignKey('venues.id'), nullable = False , default = tba)
-    wishlist    = db.relationship('Wishlist')
-
 
 class Favorite(db.Model):
     __tablename__ = "favorites"
@@ -109,14 +96,6 @@ class Favorite(db.Model):
     comment_id = db.Column(db.Integer,db.ForeignKey('comments.id', ondelete='cascade'))
 
 
-class Venue(db.Model):
-    __tablename__ = "venues"
-
-    id       = db.Column(db.Integer , primary_key = True)
-    name     = db.Column(db.String, nullable = False)
-    location = db.Column(db.String , nullable = False)
-    address  = db.Column(db.String , nullable = False , default = tba )
-    event    = db.relationship('Event' , cascade ='all,delete' , backref='events')
 
 
 class Image(db.Model):
@@ -124,7 +103,6 @@ class Image(db.Model):
 
     id  = db.Column(db.Integer , primary_key = True)
     url = db.Column(db.String , nullable=True , default= img)
-    event_id = db.relationship('Event' , cascade ='all,delete')
 
 
 class Wishlist(db.Model):
@@ -132,11 +110,24 @@ class Wishlist(db.Model):
 
     id = db.Column(db.Integer , primary_key = True, autoincrement=True )
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    event_id = db.Column(db.String)
     event_name = db.Column(db.String)
     event_url = db.Column(db.String)
-    event_date = db.Column(db.DateTime)
+   #  event_date = db.Column(db.DateTime , nullable=False , default=datetime.utcnow())
     event_image =db.Column(db.String)
+
+    @classmethod
+    def mapWishListObj(user_id, raw_event):
+        wishlist = {}
+        event = raw_event['_embedded']['events'][0]
+        wishlist['user_id'] = user_id
+        wishlist['event_name'] = event['name']
+        wishlist['event_url'] = event['url']
+        # wishlist['event_date'] = event['dates']
+        wishlist['event_image'] = event['images'][2]['url'] 
+        # wishlist['classifications']  = event['classifications'][0]
+        wishlist['event_id'] = event['id']  
+        return wishlist 
 
    
 def connect_db(app):

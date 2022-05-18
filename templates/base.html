@@ -45,24 +45,33 @@
     </nav>
 
 <header>
-  <!-- Background image -->
-  <div class="p-5 text-center bg-image"
-    style="
-      background-image: url('https://images.unsplash.com/photo-1544924751-8acb02fb5331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80');
-      background-size: cover;
-      height:400px;
-      background-repeat: no-repeat;">
-              
-  <div class="mask" style="background-color:rgba(247, 156, 156, 0.507);">
-    <div class="d-flex justify-content-center align-items-center h-100">
-      <div class="text-black">
-        <h1 class="mb-3" > Events</h1>
-        <h4 class="mb-3">Search for events in your area, share your thoughts and more...</h4>
-        <div> <a class="btn btn-dark mt-auto" href="/events" role="button">Start</a></div>
+  <header style="font-family: 'Radio Canada', sans-serif;">
+    <!-- Background image -->
+    <div class="p-5 text-center bg-image"
+      style="
+        background-image: url('/static/images/mic.jpg');
+        background-size: cover;
+        height:300px;
+        background-repeat: no-repeat;">
+                
+    <div class="mask" >
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-black">
+          <h1 class="mb-3" style="font-size:500%; color:#fbc2eb" > <b> Events </b></h1>
+          <h3 class="mb-3" style="color:#fbc2eb;">Search for events in your area, share your thoughts and more...</h3>
+          <div> <a class="btn btn-warning  btn-lg mt-auto" href="/events" role="button"><i class="fas fa-hand-point-right"></i> Start</a></div>
+        </div>
       </div>
     </div>
-  </div>
-
+  
+    <div class="container">
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}       
+         
+    </div>
+  </header>
+  
   <div class="container">
     {% for category, message in get_flashed_messages(with_categories=True) %}
     <div class="alert alert-{{ category }}">{{ message }}</div>

@@ -49,20 +49,21 @@
 
   <header>
      <!-- Background image -->
-    <div
-      class="p-5 text-center bg-image"
+     <header style="font-family: 'Radio Canada', sans-serif;">
+      <!-- Background image -->
+      <div class="p-5 text-center bg-image"
         style="
-          background-image: url('https://images.unsplash.com/photo-1544924751-8acb02fb5331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80');
+          background-image: url('/static/images/mic.jpg');
           background-size: cover;
-          height:500px;
+          height:400px;
           background-repeat: no-repeat;">
-           
-          <div class="mask" style="background-color:rgba(247, 156, 156, 0.507);">
-            <div class="d-flex justify-content-center align-items-center h-100">
-              <div class="text-black">
-
-                <h1 class="mb-3" > Events </h1>
-                <h4 class="mb-3"> Enter a keyword and a city name to start new experiences!</h4>
+                  
+      <div class="mask" >
+        <div class="d-flex justify-content-center align-items-center h-100">
+          <div class="text-black">
+            <h1 class="mb-3" style="font-size:300%; color:#fbc2eb" > <b> Events </b></h1>
+            <h4 class="mb-3" style="color:#fbc2eb;">Enter a keyword and a city name to start new experiences!</h4>
+            <div class="formclass" style="color:#fbc2eb; font-size:120%; background-color:black;">
                 <form action="/events" method="POST">
 
                 {{ form.hidden_tag() }}
@@ -79,23 +80,22 @@
                     {% endfor %}
                   </p>
                 {% endfor %}
-
-                <button id="sub-button" class="btn btn-dark btn-outline-dark mt-auto"  type="submit"> Search </button> 
+                </div>
+                <button id="sub-button" class="btn btn-warning btn-lg mt-auto" type="submit" style="color:black;"> Search </button> 
                 </form>
-              </div>
-            </div>
           </div>
+        </div>
     </div>
   </header>
 
   <!-- Section--> 
-<section class="py-5" style="background-color:black">
+<section class="py-5" style="background: -webkit-gradient(linear, left bottom, left top, from(#fbc2eb), to(#a18cd1))">
          
 <div class="container"> 
   <div class="row">
   {% for event in events %}    
     <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
-      <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));">
+      <div class="card"  style="background-color:black; color:white;">
         <img class="card-img-top" src={{event.images}} alt="Card image cap">
         <div class="card-body" style="flex:auto; padding:10px;">
           <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
@@ -116,9 +116,9 @@
                                         -ms-transform: translate(-50%, -50%);
                                          transform: translate(-50%, -50%);">
               <div class="btn-group"  >
-                <button id="slide_start_button" value="Start" class="btn btn-outline-success"  style="display: inline-block; margin-right: 5px; color:black;"> <a style="color:black;" href="{{event.url}}"><i class="fa-solid fa-ticket"></i> Tickets </a></button>
+                <button id="slide_start_button" value="Start" class="btn btn-info"  style="display: inline-block; margin-right: 5px; color:black;"> <a style="color:black;" href="{{event.url}}"><i class="fa-solid fa-ticket"></i> Tickets </a></button>
                 <form method="POST" action="/events/{{ event.id }}/wishlist">
-                <button id="slide_stop_button" value="Stop" class="btn btn-outline-warning" type="submit" style="display: inline-block; margin-right: 5px; color:black;" > <i class="fa-solid fa-clipboard-list"></i> Wishlist </button>
+                <button id="slide_stop_button" value="Stop" class="btn btn-warning" type="submit" style="display: inline-block; margin-right: 5px; color:black;" > <i class="fa-solid fa-clipboard-list"></i> Wishlist </button>
                 </form>
              </div>
              </div>
