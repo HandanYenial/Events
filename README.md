@@ -1,4 +1,7 @@
 # Events
+![event](https://user-images.githubusercontent.com/88174651/169120409-87c6fc5b-f284-47c0-b953-1d2d7c64b0b5.gif)
+
+
 Events website is designed for searching for events in your area. It lets you to search for an event in any area by using a keyword and a city name, and add your favorite events to your personalized event list.
 
 Ticketmaster Api is used for this project : https://app.ticketmaster.com/discovery/v2/
