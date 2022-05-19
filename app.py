@@ -77,6 +77,7 @@ def show_homepage():
             event_dic['classifications']  = event['classifications'][0]
             event_dic['sales'] = event['sales']
             event_dic['id'] = event['id']
+            event_dic['venue'] = event['_embedded']['venues'][0]
             py_date = parser.parse(event['sales']['public']['endDateTime'])
             event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
           

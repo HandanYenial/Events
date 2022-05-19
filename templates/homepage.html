@@ -81,10 +81,11 @@
           <img class="card-img-top" src={{event.images}} alt="Card image cap">
             <div class="card-body" style="flex:auto; padding:20px;">
               <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
-              <p class="card-text" style="text-align:center;"><u> {{ event.dates.start.localDate }}</u></p>
+              <p class="card-text" style="text-align:center; color:#fbc2eb;"><u> {{ event.dates.start.localDate }}</u></p>
               <p class="card-text" style="text-align:center;"> <b> {{ event.classifications.genre.name }} </b></p>
-              <p class="card-text"> <i class="fa-solid fa-people-group"></i> <b>Family Friendly:</b> {{ 'Yes' if event.classifications.family == True else 'No' }}</p>  
-              <p class="card-text">  <i class="fa-solid fa-ticket"></i> <b>Ticket Sales End Date: </b> {{event.sales_end_date}} EST</p>
+              <p class="card-text"> <i class="fa-solid fa-location-dot"></i> {{ event.venue.state.name}} </p>
+              <p class="card-text"> <i class="fa-solid fa-people-group"></i> Family Friendly: {{ 'Yes' if event.classifications.family == True else 'No' }}</p>  
+              <p class="card-text"> <i class="fa-solid fa-ticket"></i> Ticket Sales End Date:  {{event.sales_end_date}} EST</p>
               <p class="card-text">  <b>EventID </b> {{ event.id }} </p>
 
               <div class="container" style=" height: 50px; position: relative; color:black;">
@@ -100,18 +101,6 @@
                 
                 
                 "> <a style="color:rgb(23, 7, 94)" href="{{event.url}}"> <i class="fa-solid fa-ticket"></i>  Tickets </a></button>
-
-                <form method="POST" action="/events/wishlist">
-                <button id="slide_stop_button" value="Stop" class="btn btn-warning col mx-4 px-4 md-12" type="submit" style= "appearance: button;
-                -moz-appearance: button;
-                -webkit-appearance: button;
-                text-decoration: none; 
-                font: menu; 
-                color: ButtonText;
-                
-               
-                "> <i class="fa-solid fa-clipboard-list"></i> My Event List </button>
-                </form>
 
              </div>
              </div>
