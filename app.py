@@ -14,7 +14,7 @@ import json #to add json support
 
 CURR_USER_KEY = "curr_user"
 
-API_BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events?apikey={APIKEY}'
+API_BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events?apikey=1g89Fx2KHiAD3WdLaBFtpKdTxZEW2lvS'
 
 app = Flask(__name__)
          
@@ -66,9 +66,9 @@ def show_homepage():
     my_event = requests.get(API_BASE_URL) # request data from API
     the_event_info = my_event.json() # and convert into a json file(this is a dictionary)
     
-    if the_event_info['page']['totalElements'] != 0: # if the result is not0-if there is a result of the request
-        for event in the_event_info['_embedded']['events']: #the API was an embedded API to reach each componentget through [_embedded][events]
-            event_dic = {} #set an empty dictionary to add the API data(data is in json format so dic is used)
+    if the_event_info['page']['totalElements'] != 0:         # if the result is not0-if there is a result of the request
+        for event in the_event_info['_embedded']['events']:  #the API was an embedded API to reach each componentget through [_embedded][events]
+            event_dic = {}                    #set an empty dictionary to add the API data(data is in json format so dic is used)
             event_dic['name'] = event['name'] #get data from API and put into the dictionary
             event_dic['url'] = event['url']
             event_dic['dates'] = event['dates']
@@ -110,6 +110,7 @@ def search():
                 event_dic['images'] = event['images'][2]['url'] 
                 event_dic['classifications']  = event['classifications'][0]
                 event_dic['id'] = event['id']
+                event_dic['venue'] = event['_embedded']['venues'][0]
                 py_date = parser.parse(event['sales']['public']['endDateTime'])
                 event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
                 events.append(event_dic)
@@ -251,31 +252,43 @@ def show_user_wishlist(event_id):
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    events = []
-    search_items = {'id' : event_id} 
-    result = requests.get('https://app.ticketmaster.com/discovery/v2/events/{id}?apikey=1g89Fx2KHiAD3WdLaBFtpKdTxZEW2lvS')
-    the_event_info = result.json() 
+    result = requests.get(f'https://app.ticketmaster.com/discovery/v2/events/{event_id}?apikey=1g89Fx2KHiAD3WdLaBFtpKdTxZEW2lvS')
+    event = result.json()
 
-    for event in the_event_info['_embedded']['events']:
-        event_dic = {}
-        event_dic['name'] = event['name']
-        event_dic['url'] = event['url']
-        # event_dic['dates'] = event['dates']
-        event_dic['images'] = event['images'][2]['url'] 
-    
-        events.append(event_dic)
-        entry = Wishlist(
-                user_id = g.user.id,
-                event_id = json.dumps(event['id']),
-                event_name = json.dumps(event['name']),
-                event_url = json.dumps(event['url']),
-               # event_date = json.dumps(event['dates']),
-                event_image = json.dumps(event['images'][2]['url']))
+    entry = Wishlist(
+            user_id = g.user.id,
+            event_id = event['id'],
+            event_name = event['name'],
+            event_url = event['url'],
+            # event_date = json.dumps(event['dates']),
+            event_image = event['images'][2]['url'])
 
-        db.session.add(entry)
-        db.session.commit()
+    db.session.add(entry)
+    db.session.commit()
 
-        return render_template("wishlist.html" , form=form , events=events, the_event_info=the_event_info )
+    user_wishlists = Wishlist.query.all()
+
+    #for w in user_wishlists:
+       # print(w.event_name)
+
+    return render_template("wishlist.html", wishlist=user_wishlists )
+
+
+@app.route('/events/<event_id>/delete', methods=["POST"])
+def delete_event(event_id):
+    """Delete a comment."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+                                               
+    w_event = Wishlist.query.get_or_404(event_id)  #retrieve the event by event_id
+
+ 
+    db.session.delete(w_event) #delete the event from database
+    db.session.commit()
+
+    return redirect(f"/users/{g.user.id}")
 
 
 ## We have a got a dictionary with same columns/props of models

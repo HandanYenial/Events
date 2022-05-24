@@ -5,13 +5,19 @@
 <section>
     <div class="container"> 
       <div class="row">
-      {% for event in events %} 
+      {% for event in wishlist %} 
         <div class="col-sm-6 col-md-4" style="padding:30px; flex:auto; align-items: center;">
           <div class="card"  style="background-image:linear-gradient(rgba(245, 248, 245, 0.87), rgba(179, 103, 141, 0.774));">
-            <img class="card-img-top" src={{event.images}} alt="Card image cap">
+            <img class="card-img-top" src={{event.event_image}} alt="Card image cap">
             <div class="card-body" style="flex:auto; padding:10px;">
-              <h5 class="card-title">{{event.name }}</h5>
-              <a href="/events/{{event.id}}" class="btn btn-warning">Tickets</a>
+              <h5 class="card-title">{{event.event_name }}</h5>
+              <a href="{{event.event_url}}" class="btn btn-warning">Tickets</a>
+                
+              <form method="POST" action="/events/{{ event.event_id }}/delete">
+               <button class="btn btn-link" style="color:rgb(167, 7, 7);"> <i class="fa-solid fa-trash-can"></i> Delete Event</button>
+              </form>
+             
+  
             </div>
           </div>
         </div>

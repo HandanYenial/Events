@@ -101,6 +101,7 @@
           <h5 class="card-title" style="text-align: center;">{{event.name }}</h5>
           <p class="card-text" style="text-align:center;"><u>{{ event.dates.start.localDate }}</u></p>
           <p class="card-text" style="text-align:center;"> <b> {{ event.classifications.genre.name }} </b></p>
+          <p class="card-text"> <i class="fa-solid fa-location-dot"></i> {{ event.venue.state.name}} </p>
           <p class="card-text"> <i class="fa-solid fa-people-group"></i> <b> Family Friendly:</b> {{ 'Yes' if event.classifications.family == True else 'No' }}</p>  
           <p class="card-text">  <i class="fa-solid fa-ticket"></i> <b>Ticket Sales End Date: </b> {{event.sales_end_date}} EST</p>
 
