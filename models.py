@@ -97,18 +97,6 @@ class Wishlist(db.Model):
    #  event_date = db.Column(db.DateTime , nullable=False , default=datetime.utcnow())
     event_image =db.Column(db.String)
 
-    @classmethod
-    def mapWishListObj(user_id, raw_event):
-        wishlist = {}
-        event = raw_event['_embedded']['events'][0]
-        wishlist['user_id'] = user_id
-        wishlist['event_name'] = event['name']
-        wishlist['event_url'] = event['url']
-        # wishlist['event_date'] = event['dates']
-        wishlist['event_image'] = event['images'][2]['url'] 
-        # wishlist['classifications']  = event['classifications'][0]
-        wishlist['event_id'] = event['id']  
-        return wishlist 
 
    
 def connect_db(app):
