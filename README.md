@@ -7,7 +7,7 @@ Events website is designed for searching for events in your area. It lets you to
 
 Ticketmaster Api is used for this project : https://app.ticketmaster.com/discovery/v2/
 
-The website is deployed here: ...........................
+The website is deployed here: https://events2022.herokuapp.com/
 
 ## Pages and Usage
 **Homepage:** Homepage displays random events in United States with event name,date,genre and event ticket sales information.It also enables users to add this event to their personal event list and reach ticketmaster website to purchase the event ticket.
