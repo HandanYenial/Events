@@ -18,7 +18,7 @@ API_BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events?apikey=1g89Fx2K
 
 app = Flask(__name__)
          
-app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URI' , 'postgres://uodhbjdiqxodpu:b8793068e4f2eefc7040deff773cfdb31b157fee3f15e0f9417ca64c0a4be5e4@ec2-3-234-131-8.compute-1.amazonaws.com:5432/dd0o0h0h8goh08'))
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URI' , 'postgresql://uodhbjdiqxodpu:b8793068e4f2eefc7040deff773cfdb31b157fee3f15e0f9417ca64c0a4be5e4@ec2-3-234-131-8.compute-1.amazonaws.com:5432/dd0o0h0h8goh08'))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config["SQLALCHEMY_ECHO"] = True
