@@ -1,9 +1,10 @@
 import os
 
 from flask import Flask, render_template, redirect, flash, session, jsonify,request,g,abort
+
 #import flask methods
 #from flask_debugtoolbar import DebugToolbarExtension
-from sqlalchemy.exc import IntegrityError #for errors in SQLAlchemy 
+from sqlalchemy.exc import IntegrityError #for errors in SQLAlchemy: as using same key twice...
 from werkzeug.exceptions import Unauthorized
 from dateutil import parser #for date and time
 
@@ -14,15 +15,15 @@ import json #to add json support
 
 CURR_USER_KEY = "curr_user"
 
-API_BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events?apikey=API_KEY'
+API_BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events?apikey=1g89Fx2KHiAD3WdLaBFtpKdTxZEW2lvS'
 
 app = Flask(__name__)
          
-uri = (os.environ.get('DATABASE_URL' , 'postgresql:///event_db'))
+uri = (os.environ.get('DATABASE_URL' , ))
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URI' , 'postgresql://uodhbjdiqxodpu:b8793068e4f2eefc7040deff773cfdb31b157fee3f15e0f9417ca64c0a4be5e4@ec2-3-234-131-8.compute-1.amazonaws.com:5432/dd0o0h0h8goh08'))
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URI' , 'postgresql:///event_db'))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 app.config["SQLALCHEMY_ECHO"] = True
@@ -63,15 +64,16 @@ def do_logout():
 
 ########### API routes ################
 
-@app.route("/" , methods = ["GET"]) 
-def show_homepage():
+@app.route("/" , methods = ["GET"]) # the decorator that declares the route
+def show_homepage(): #view function
     """Show homepage with random events rendered from API"""
     
     events=[] # having an empty array, will push the results in this array
     my_event = requests.get(API_BASE_URL) # request data from API
     the_event_info = my_event.json() # and convert into a json file(this is a dictionary)
     
-    if the_event_info['page']['totalElements'] != 0:         # if the result is not0-if there is a result of the request
+    if the_event_info['page']['totalElements'] != 0:  
+               # if the result is not0-if there is a result of the request
         for event in the_event_info['_embedded']['events']:  #the API was an embedded API to reach each componentget through [_embedded][events]
             event_dic = {}                    #set an empty dictionary to add the API data(data is in json format so dic is used)
             event_dic['name'] = event['name'] #get data from API and put into the dictionary
@@ -91,7 +93,7 @@ def show_homepage():
     return render_template("homepage.html" ,events=events, my_event=my_event,the_event_info=the_event_info)
 
 
-@app.route('/events', methods=['GET','POST'])
+@app.route('/events', methods=['GET','POST']) #get method displays the form and post method process the form data
 def search():
     """Search for events by using a keyword and a city name"""
   
@@ -116,8 +118,8 @@ def search():
                 event_dic['classifications']  = event['classifications'][0]
                 event_dic['id'] = event['id']
                 event_dic['venue'] = event['_embedded']['venues'][0]
-                py_date = parser.parse(event['sales']['public']['endDateTime'])
-                event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
+                #py_date = parser.parse(event['sales']['public']['endDateTime'])
+                #event_dic['sales_end_date'] = py_date.strftime("%Y-%m-%d %H:%M")
                 events.append(event_dic)
                 
     return render_template("index.html" , form=form, events=events)
@@ -279,15 +281,15 @@ def show_user_wishlist(event_id):
     return render_template("wishlist.html", wishlist=user_wishlists )
 
 
-@app.route('/events/<event_id>/delete', methods=["POST"])
-def delete_event(event_id):
+@app.route('/events/<wishlists_event_id>/delete', methods=["POST"])
+def delete_event(wishlists_event_id):
     """Delete a comment."""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
                                                
-    w_event = Wishlist.query.get_or_404(event_id)  #retrieve the event by event_id
+    w_event = Wishlist.query.get_or_404(wishlists_event_id)  #retrieve the event by event_id
 
  
     db.session.delete(w_event) #delete the event from database

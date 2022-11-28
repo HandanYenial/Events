@@ -62,7 +62,7 @@ class User(db.Model):
 
         if user:
             is_auth = bcrypt.check_password_hash(user.password, password)
-            print("&&&&&")
+            #print("&&&&&")
             print(is_auth, user.password, password)
             if is_auth:
                 return user
@@ -89,7 +89,7 @@ class Comment(db.Model):
 class Wishlist(db.Model):
     __tablename__ = "wishlists"
 
-    id = db.Column(db.Integer , primary_key = True, autoincrement=True )
+    id = db.Column(db.Integer,primary_key = True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     event_id = db.Column(db.String)
     event_name = db.Column(db.String)
