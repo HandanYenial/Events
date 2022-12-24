@@ -22,6 +22,8 @@ app = Flask(__name__)
 uri = (os.environ.get('DATABASE_URL' , ))
 if uri and uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
+    
+#engine = create_engine('postgresql://catalog:password@localhost/event_db'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URI' , 'postgresql:///event_db'))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
