@@ -3,7 +3,7 @@
 
 
 
-Events app is designed for searching for events in your area. It lets you to search for an event in any area by using a keyword and a city name, and add your favorite events to your personalized event list.
+The Events web app is specifically designed to help users search for events in a particular area. By simply entering a keyword and a city name, users can easily find events that match their interests. Additionally, users have the option to add their favorite events to a personalized event list for easy reference later on.
 
 Ticketmaster Api is used for this project : https://app.ticketmaster.com/discovery/v2/
 
