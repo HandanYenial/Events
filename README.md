@@ -12,7 +12,7 @@ The website is deployed here: https://events2022.herokuapp.com/
 ## Pages and Usage
 **Homepage:** Homepage displays random events in United States with event name,date,genre and event ticket sales information.It also enables users to add this event to their personal event list and reach ticketmaster website to purchase the event ticket.
 
-**Events:** Events page allows user to search for an event with a keyword as music, baseball or community and a city name. Search results displays on the same page as cards with event information.
+**Events:** The Events page enables users to search for specific events using keywords such as music, baseball, or community, along with a city name. The search results are displayed on the same page in the form of cards, each containing information about a particular event.
 
 **Profile:** Displays user information, and user comments.
 
