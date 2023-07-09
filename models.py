@@ -31,8 +31,7 @@ class User(db.Model):
     @classmethod
     def signup(cls, username, email, password, img_url, first_name,last_name):
         """Sign up user.
-
-        Hashes password and adds user to system.
+        Hashes password and adds the user to the system.
         """
 
         print("BEFORE HASH", password)
@@ -53,8 +52,7 @@ class User(db.Model):
 
     @classmethod
     def authenticate(cls, username, password):
-        """Validate that user exists & password is correct.
-
+        """Validate that the user exists & password is correct.
         Return user if valid; else return False.
         """
 
@@ -68,8 +66,6 @@ class User(db.Model):
                 return user
 
         return False
-
-
 
    
 class Comment(db.Model):
@@ -96,7 +92,6 @@ class Wishlist(db.Model):
     event_url = db.Column(db.String)
    #  event_date = db.Column(db.DateTime , nullable=False , default=datetime.utcnow())
     event_image =db.Column(db.String)
-
 
    
 def connect_db(app):
