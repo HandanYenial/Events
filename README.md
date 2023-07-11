@@ -5,23 +5,23 @@
 
 The Events web app is specifically designed to help users search for events in a particular area. By simply entering a keyword and a city name, users can easily find events that match their interests. Additionally, users have the option to add their favorite events to a personalized event list for easy reference later on.
 
-Ticketmaster Api is used for this project : https://app.ticketmaster.com/discovery/v2/
+Ticketmaster Api is used for this project: https://app.ticketmaster.com/discovery/v2/
 
 The website is deployed here: https://events2022.herokuapp.com/
 
 ## Pages and Usage
-**Homepage:** Homepage displays random events in United States with event name,date,genre and event ticket sales information.It also enables users to add this event to their personal event list and reach ticketmaster website to purchase the event ticket.
+**Homepage:** Homepage displays random events in the United States with event names, dates, genres, and event ticket sales information. It also enables users to add this event to their personal event list and reach the Ticketmaster website to purchase the event ticket.
 
 **Events:** The Events page enables users to search for specific events using keywords such as music, baseball, or community, along with a city name. The search results are displayed on the same page in the form of cards, each containing information about a particular event.
 
-**Profile:** Displays user information, and user comments.
+**Profile:** Displays user information and user comments.
 
-**Event List:** Display event list for the user. 
+**Event List:** Display the event list for the user. 
 
 ## Tech Stack
-- ***Heroku*** :A container-based cloud Platform as a Service (PaaS)it is used to deploy and manage the website.
+- ***Heroku***:A container-based cloud Platform as a Service (PaaS) is used to deploy and manage the website.
 
-- ***Gunicorn:*** Python application for running multiple Python processes on Heroku.(The app is prepared on flask, with gunicorn we run it on heroku)
+- ***Gunicorn:*** Python application for running multiple Python processes on Heroku. (The app is prepared on Flask, with gunicorn we run it on Heroku)
 
 - ***Flask:***  A Python web framework with useful tools and features.
 
