@@ -66,18 +66,18 @@ __Query Parameters:__
 ## Events Routes 
 |     Routes     |  Method  |  Login Required  |          Details             |
 |----------------|----------|------------------|------------------------------|
-|    /signup     |Get/Post |      No          | Create and display a new user with SignUpForm built by WTForms with username,email,password,img_url(optional),first name and last name.|
+|    /signup     |Get/Post |      No          | Create and display a new user with SignUpForm built by WTForms with username, email, password,img_url(optional), first name, and last name.|
 |    /login      | Get/Post |      Yes         | Display the login form built by WTForms and authenticate the user.|
 |    /logout     | Get| No| Logout the user and clear any information in the session|
-|/ users/user_id| Get| Yes|Show user profile : username, user image, user comments and links to several pages|
+|/ users/user_id| Get| Yes|Show user profile: username, user image, user comments, and links to several pages|
 |/users/edit|Get/Post|Yes|Edit profile for the user by using EditUserForm built ib WTForms|
 |/users/delete|Post|Yes|Delete user|
 |/homepage|Get|No|Displays random images around United States|
-|/events|Get/Post|No|Search for events by keyword and city name by SearchForm (WTForms) and display results in cards designed with Bootstrap5, including event image, event name,event genre,family-friendly, ticket sales end date.|
-|events/event_id/wishlist|Get/Post| Yes| Add events to user event list and display them on Event List page.Render event ids from Api and save them in the database.|
+|/events|Get/Post|No|Search for events by keyword and city name by SearchForm (WTForms) and display results in cards designed with Bootstrap5, including event image, event name, event genre, family-friendly, and ticket sales end date.|
+|events/event_id/wishlist|Get/Post| Yes| Add events to the user event list and display them on the Event List page. Render event ids from Api and save them in the database.|
 |/comments/new|Get/Post|Yes|Display comment form(WTForms) and add comment with username|
-|/comments| Get| No|Show all comments in a table sorted by date posted.|
-|/comments/comment_id/delete| Post |Yes|Enables user to delete the comment on webpage and on database.|
+|/comments| Get| No|Show all comments in a table sorted by the date posted.|
+|/comments/comment_id/delete| Post |Yes|Enables user to delete the comment on the webpage and on the database.|
 
 ## Database Schema
 ![DatabaseDiagram](https://user-images.githubusercontent.com/88174651/169098721-13c7fc10-2897-4587-8c36-86def8db6e7d.png)
