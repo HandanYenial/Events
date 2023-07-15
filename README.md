@@ -21,21 +21,21 @@ The website is deployed here: https://events2022.herokuapp.com/
 ## Tech Stack
 - ***Heroku***:A container-based cloud Platform as a Service (PaaS) is used to deploy and manage the website.
 
-- ***Gunicorn:*** Python application for running multiple Python processes on Heroku. (The app is prepared on Flask, with gunicorn we run it on Heroku)
+- ***Gunicorn:*** Python application for running multiple Python processes on Heroku. (The app is prepared on Flask, with Gunicorn we run it on Heroku)
 
 - ***Flask:***  A Python web framework with useful tools and features.
 
-- ***Jinja:*** A web template engine for the Python programming language, used for creating dynamic html files.
+- ***Jinja:*** A web template engine for the Python programming language, used for creating dynamic HTML files.
 
-- ***SQLAlchemy:*** A library to obtain communication between Python programs and databases. It is used as an ORM(Objact Relational Mapper).
+- ***SQLAlchemy:*** A library to obtain communication between Python programs and databases. It is used as an ORM(Object Relational Mapper).
 
-- ***WTForms:*** A python library that privides web form rendering and data validation.
+- ***WTForms:*** A python library that provides web form rendering and data validation.
 
 - ***PostgreSQL:*** Database, primary data storage.
 
 - ***Bcrypt:*** To hash the user passwords. 
 
-- ***HTML5:*** A markup language to structure and present content on website.
+- ***HTML5:*** A markup language to structure and present content on the website.
 
 - ***CSS:*** To style the webpage
 
@@ -59,7 +59,7 @@ __Query Parameters:__
 |     id           | Filter entities by its id                                 |    String    |
 |   keyword        | Keyword to search on                                      |    String    |
 | startDateTime    | Filter with a start date after this date                  |    String    |
-|onsaleEndDateTime | Filter with onsale end date before this date              |    String    |
+|onsaleEndDateTime | Filter with on sale end date before this date              |    String    |
 |      city        | Filter by city                                            |    Array     |
 |classificationName| Filter by classification name: name of any segment, genre,sub-genre, type, sub-type.|     Array    |
                      
